@@ -4,7 +4,7 @@ import 'package:MoneySpace/shared/widgets/comfirmed_button/confirmed_button_widg
 import 'package:MoneySpace/shared/widgets/text_field/text_field_widget.dart';
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatelessWidget {
+class EsqueciSenhaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +24,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      "Acesse Sua Conta",
+                      "Recuperar a Senha",
                       style: 
                       AppTextStyles.title,
                     )
@@ -41,12 +41,6 @@ class LoginPage extends StatelessWidget {
                   TextFieldWidget(
                     label: "E-mail",
                   ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                   TextFieldWidget(
-                    label: "Senha",
-                   ),
                 ],
               ),
             ),
@@ -56,7 +50,7 @@ class LoginPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [                
-                Expanded(child: ConfirmedButtonWidget.green(label: "Entrar")),
+                Expanded(child: ConfirmedButtonWidget.green(label: "Recuperar")),
               ],
             ),
             SizedBox(
@@ -65,16 +59,7 @@ class LoginPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Expanded(child: ConfirmedButtonWidget.grey(label: "Criar uma Conta!")),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Expanded(child: ConfirmedButtonWidget.transparent(label: "Esqueci Minha Senha!")),
+                Expanded(child: ConfirmedButtonWidget.transparent(label: "Acessar Minha Conta!")),
               ],
             )
           ],
