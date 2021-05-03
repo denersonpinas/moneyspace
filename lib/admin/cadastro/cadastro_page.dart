@@ -1,8 +1,9 @@
-import 'package:MoneySpace/core/app_colors.dart';
-import 'package:MoneySpace/core/app_text_styles.dart';
-import 'package:MoneySpace/shared/widgets/comfirmed_button/confirmed_button_widget.dart';
-import 'package:MoneySpace/shared/widgets/text_field/text_field_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../core/app_colors.dart';
+import '../../core/app_text_styles.dart';
+import '../../shared/widgets/comfirmed_button/confirmed_button_widget.dart';
+import '../../shared/widgets/text_field/text_field_widget.dart';
 
 class CadastroPage extends StatelessWidget {
   @override
