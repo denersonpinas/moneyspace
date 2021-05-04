@@ -84,4 +84,34 @@ class AppTextStyles {
     fontSize: 11,
     fontWeight: FontWeight.normal,
   );
+  static final TextStyle titleData = GoogleFonts.notoSans(
+    color: AppColors.black,
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+  );
+  static final TextStyle valueSaldo = GoogleFonts.notoSans(
+    color: AppColors.white,
+    fontSize: 60,
+    fontWeight: FontWeight.w800,
+  );
+  static final TextStyle titleSaldo = GoogleFonts.notoSans(
+    color: AppColors.white,
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+  );
+  static final TextStyle titleList = GoogleFonts.notoSans(
+    color: AppColors.white,
+    fontSize: 18,
+    fontWeight: FontWeight.w800,
+  );
+  static final TextStyle valueList = GoogleFonts.notoSans(
+    color: AppColors.white,
+    fontSize: 23,
+    fontWeight: FontWeight.w800,
+  );
+  static final TextStyle dataList = GoogleFonts.notoSans(
+    color: AppColors.white,
+    fontSize: 8,
+    fontWeight: FontWeight.w500,
+  );
 }
