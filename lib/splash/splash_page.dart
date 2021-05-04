@@ -1,7 +1,7 @@
-import 'package:MoneySpace/admin/cadastro/cadastro_page.dart';
+import 'package:moneyspace/selection/selection_page.dart';
 import 'package:flutter/material.dart';
-import 'package:MoneySpace/core/app_gradients.dart';
-import 'package:MoneySpace/core/app_images.dart';
+import 'package:moneyspace/core/app_gradients.dart';
+import 'package:moneyspace/core/app_images.dart';
 
 class SplashPage extends StatelessWidget {
 
@@ -10,7 +10,7 @@ class SplashPage extends StatelessWidget {
     Future.delayed(Duration(
       seconds:  2
     )).then((_)=> Navigator.pushReplacement(
-      context, MaterialPageRoute(builder: (context) => CadastroPage())
+      context, MaterialPageRoute(builder: (context) => SelectionPage())
     ));
     
     return Scaffold(

@@ -1,4 +1,4 @@
-import 'package:MoneySpace/splash/splash_page.dart';
+import 'package:moneyspace/splash/splash_page.dart';
 import 'package:flutter/material.dart';
 
 class AppWidget extends StatelessWidget {
