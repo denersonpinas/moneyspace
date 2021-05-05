@@ -18,7 +18,7 @@ class ConfirmedButtonWidget extends StatelessWidget {
   }) : super(key: key);
 
   ConfirmedButtonWidget.green({ required String label})
-    : this.backgroundColor = AppColors.darkGreen,
+    : this.backgroundColor = AppColors.green,
       this.fontColor = AppColors.white,
       this.boderColor = AppColors.green,
       // this.onTap = onTap,

@@ -14,19 +14,49 @@ class SelectionPage extends StatefulWidget {
 class _SelectionPageState extends State<SelectionPage> {  
 
   late DateTime? _dateTime;
+  late String? dropdownValue;
+  dynamic circleColor;
+  int contadorColor = 1;
+
+  setColor() {
+    if(contadorColor == 1){
+      contadorColor++;
+      return circleColor = AppColors.darkGreen;      
+    } else if(contadorColor == 2){
+      contadorColor++;
+      return circleColor = AppColors.yellow;      
+    }  else {
+      contadorColor = 1;
+      return circleColor = AppColors.red;      
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _dateTime = null;
+    dropdownValue = null;
   }
 
   setText() {
     if(_dateTime == null) {
-      return Icon(
+      return Row(
+        children: [
+          Icon(
             Icons.calendar_today,
             color: AppColors.green,
-          );
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Text(
+            "05/05/1990",
+            style: TextStyle(
+              color: AppColors.lightGrey,
+              fontSize: 18,
+            ),
+          )
+        ]);
     } else {
       return Row(
         children: [
@@ -39,7 +69,10 @@ class _SelectionPageState extends State<SelectionPage> {
           ),
           Text(
             _dateTime.toString(),
-            style: AppTextStyles.body,
+            style: TextStyle(
+              color: AppColors.lightGrey,
+              fontSize: 18,
+            ),
           )
         ]);
     }
@@ -63,7 +96,72 @@ class _SelectionPageState extends State<SelectionPage> {
               SizedBox(
                 height: 50,
               ),
-              TextFieldWidget(label: "E-mail"),
+              Container(
+                padding: EdgeInsets.only(left: 12, right: 12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.greyBlack
+                ),
+                child: 
+                DropdownButton<String>(
+                  icon: Icon(
+                    Icons.arrow_drop_down,
+                    color: AppColors.green,
+                  ),
+                  hint: Row(children: [
+                    Image.asset(
+                      AppImages.farol,
+                      scale: 1.5,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Selecione",
+                      style: TextStyle(
+                        color: AppColors.lightGrey,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],),
+                  dropdownColor: AppColors.greyBlack,
+                  value: dropdownValue,                
+                  isExpanded: true,
+                  iconSize: 36,
+                  underline: SizedBox(),
+                  style: AppTextStyles.body,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownValue = newValue!;
+                    });
+                  },
+                  items: <String>['Gastos Essenciais', 'Gastos Não Essenciais', 'Investimentos']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child:                      
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.circle,
+                            color: setColor(),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            value,
+                            style:TextStyle(
+                              color: AppColors.lightGrey,
+                              fontSize: 18
+                            )
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
               SizedBox(
                 height: 10,
               ),

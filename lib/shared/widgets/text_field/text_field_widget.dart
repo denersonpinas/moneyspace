@@ -55,7 +55,7 @@ class TextFieldWidget extends StatelessWidget {
       ),
       style: TextStyle(
         color: AppColors.lightGreen,
-        fontSize: 21,
+        fontSize: 18,
       ),
     );
   }            
