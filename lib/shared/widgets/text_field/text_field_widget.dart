@@ -7,7 +7,7 @@ class TextFieldWidget extends StatelessWidget {
   TextFieldWidget({
     Key? key, 
     required  this.label, 
-  }) : assert(["E-mail", "Senha", "Nome ou Apelido", "Repita a Senha",].contains(label)), super(key: key);
+  }) : assert(["E-mail", "Senha", "Nome ou Apelido", "Repita a Senha", "3,75", "Cafézinho",].contains(label)), super(key: key);
 
   final config = {
     "Nome ou Apelido" : {
@@ -21,6 +21,12 @@ class TextFieldWidget extends StatelessWidget {
     },    
     "Repita a Senha" : {
       "icon" : Icons.lock_outline
+    },
+    "3,75" : {
+      "icon" : Icons.attach_money
+    },
+    "Cafézinho" : {
+      "icon" : Icons.comment
     },
   };
 

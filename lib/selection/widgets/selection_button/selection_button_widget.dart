@@ -1,25 +1,8 @@
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:moneyspace/core/app_text_styles.dart';
 
-class SelectionButtonWidget extends StatefulWidget {  
-  final int selectedValue;
-  final String title;
-  SelectionButtonWidget({
-    Key? key,
-    required this.selectedValue,
-    required this.title,
-  }) : assert([1, 2].contains(selectedValue)), super(key: key);
-
-  final config = {
-    1 : {
-      "color" : AppColors.green,
-    },
-    2 : {
-      "color" : AppColors.red,
-    },
-  };
-
-  Color get color => config[selectedValue]!['color']!;
+class SelectionButtonWidget extends StatefulWidget {
 
   @override
   _SelectionButtonWidgetState createState() => _SelectionButtonWidgetState();
@@ -45,31 +28,62 @@ class _SelectionButtonWidgetState extends State<SelectionButtonWidget> {
     return Container(
       child:
         Expanded(
-          child: Column(
+          child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ButtonBar(
-              alignment: MainAxisAlignment.center,
-              children: [
-                Radio(
-                  value: widget.selectedValue,
-                  groupValue: selectedRadio,
-                  activeColor: widget.color,
-                  onChanged: (int? value) {
-                    print("Radio : $value");
-                    setSelectedRadio(value);
-                  },
-                )
-              ],
-            ),
-            Text(
-              widget.title,
-              style: TextStyle(
-                color: AppColors.white,
+            Expanded(
+              child: ButtonBar(
+                alignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    children: [
+                      Radio(
+                        value: 1,
+                        groupValue: selectedRadio,
+                        activeColor: AppColors.green,
+                        onChanged: (int? value) {
+                          print("Radio : $value");
+                          setSelectedRadio(value);
+                        },
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        "Receita",
+                        style: AppTextStyles.heading15,
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
+                  Text(
+                    "OU",
+                    style: AppTextStyles.heading40                                        
+                  ),
+                  Column(
+                    children: [
+                      Radio(
+                        value: 2,
+                        groupValue: selectedRadio,
+                        activeColor: AppColors.red,
+                        onChanged: (int? value) {
+                          print("Radio : $value");
+                          setSelectedRadio(value);
+                        },
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                       "Despesa",
+                        style: AppTextStyles.heading15,
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  )
+                ],
               ),
-              textAlign: TextAlign.center,
-            )
+            ),
           ],
         ),
       ),

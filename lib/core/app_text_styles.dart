@@ -17,19 +17,19 @@ class AppTextStyles {
   );
 
   static final TextStyle heading = GoogleFonts.notoSans(
-    color: AppColors.black,
+    color: AppColors.white,
     fontSize: 18,
     fontWeight: FontWeight.w600,
   );
 
   static final TextStyle heading40 = GoogleFonts.notoSans(
-    color: AppColors.black,
+    color: AppColors.greyBlack,
     fontSize: 40,
     fontWeight: FontWeight.w600,
   );
 
   static final TextStyle heading15 = GoogleFonts.notoSans(
-    color: AppColors.black,
+    color: AppColors.white,
     fontSize: 15,
     fontWeight: FontWeight.w600,
   );
@@ -85,7 +85,7 @@ class AppTextStyles {
     fontWeight: FontWeight.normal,
   );
   static final TextStyle titleData = GoogleFonts.notoSans(
-    color: AppColors.black,
+    color: AppColors.white,
     fontSize: 20,
     fontWeight: FontWeight.w600,
   );
