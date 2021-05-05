@@ -89,7 +89,7 @@ class _SelectionPageState extends State<SelectionPage> {
       backgroundColor: AppColors.darkGreyBlack,
       body: Container(
         child: Padding(
-          padding: EdgeInsets.only(left: 100, right: 100, top: 100),
+          padding: EdgeInsets.only(left: 31, right: 31, top: 100),
           child: Column(
             children: [
               Row(children: [SelectionButtonWidget()]),
