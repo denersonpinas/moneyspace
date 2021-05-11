@@ -1,6 +1,7 @@
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:moneyspace/shared/widgets/date/date_widget.dart';
 
 class AppBarWidget extends PreferredSize {
   
@@ -31,15 +32,10 @@ class AppBarWidget extends PreferredSize {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 15, top: 8),
+                    padding: const EdgeInsets.only(left: 10, top: 2),
                     child: Column(
                       children: [
-                        Text.rich(
-                          TextSpan(
-                            text: "Abril/2021",
-                            style: AppTextStyles.titleData,
-                          )
-                        )
+                        DateWidget()
                       ]
                     ),
                   )

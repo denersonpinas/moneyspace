@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:moneyspace/core/app_gradients.dart';
 import 'package:moneyspace/core/app_images.dart';
 
+import '../home/home_page.dart';
+
 class SplashPage extends StatelessWidget {
 
   @override
@@ -10,7 +12,7 @@ class SplashPage extends StatelessWidget {
     Future.delayed(Duration(
       seconds:  2
     )).then((_)=> Navigator.pushReplacement(
-      context, MaterialPageRoute(builder: (context) => SelectionPage())
+      context, MaterialPageRoute(builder: (context) => HomePage())
     ));
     
     return Scaffold(
