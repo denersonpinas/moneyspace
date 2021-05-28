@@ -1,9 +1,7 @@
-import 'package:moneyspace/selection/selection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:moneyspace/core/app_gradients.dart';
 import 'package:moneyspace/core/app_images.dart';
-
-import '../home/home_page.dart';
+import 'package:moneyspace/home/home_page.dart';
 
 class SplashPage extends StatelessWidget {
 

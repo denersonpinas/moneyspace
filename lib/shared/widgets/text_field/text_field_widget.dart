@@ -3,24 +3,17 @@ import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final String label;
+  final TextEditingController nameController;
 
   TextFieldWidget({
     Key? key, 
-    required  this.label, 
-  }) : assert(["E-mail", "Senha", "Nome ou Apelido", "Repita a Senha", "3,75", "Cafézinho",].contains(label)), super(key: key);
+    required  this.label,
+    required this.nameController, 
+  }) : assert(["Nome ou Apelido", "3,75", "Cafézinho",].contains(label)), super(key: key);
 
   final config = {
     "Nome ou Apelido" : {
       "icon" : Icons.supervised_user_circle
-    },
-    "E-mail" : {
-      "icon" : Icons.alternate_email
-    },
-    "Senha" : {
-      "icon" : Icons.lock_outline
-    },    
-    "Repita a Senha" : {
-      "icon" : Icons.lock_outline
     },
     "3,75" : {
       "icon" : Icons.attach_money
@@ -35,6 +28,7 @@ class TextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: nameController,
       decoration: InputDecoration(
         filled: true,
         fillColor: AppColors.greyBlack,

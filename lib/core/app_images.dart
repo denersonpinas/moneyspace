@@ -11,4 +11,8 @@ class AppImages {
   static String get yellow => "assets/images/yellow.png";
   static String get speech => "assets/images/speech.png";
   static String get logo => "assets/images/logo.png";
+  static String get circle => "assets/images/circle.png";
+  static String get circlered => "assets/images/circle_red.png";
+  static String get circlegreen => "assets/images/circle_green.png";
+  static String get arrow => "assets/images/arrow_up.png";
 }

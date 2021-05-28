@@ -7,35 +7,35 @@ class ConfirmedButtonWidget extends StatelessWidget {
   final Color backgroundColor;
   final Color fontColor;
   final Color boderColor;
-  // final VoidCallback onTap;
+  final VoidCallback onTap;
   ConfirmedButtonWidget({
     Key? key, 
     required this.label, 
     required this.backgroundColor, 
     required this.fontColor,
     required this.boderColor, 
-    // required this.onTap,
+    required this.onTap,
   }) : super(key: key);
 
-  ConfirmedButtonWidget.green({ required String label})
+  ConfirmedButtonWidget.green({ required String label, required VoidCallback onTap})
     : this.backgroundColor = AppColors.green,
       this.fontColor = AppColors.white,
       this.boderColor = AppColors.green,
-      // this.onTap = onTap,
+      this.onTap = onTap,
       this.label = label;
   
-  ConfirmedButtonWidget.transparent({ required String label})
+  ConfirmedButtonWidget.transparent({ required String label, required VoidCallback onTap})
     : this.backgroundColor = Colors.transparent,
       this.fontColor = AppColors.lightGrey,
       this.boderColor = Colors.transparent,
-      // this.onTap = onTap,
+      this.onTap = onTap,
       this.label = label;
   
-  ConfirmedButtonWidget.grey({ required String label})
+  ConfirmedButtonWidget.grey({ required String label, required VoidCallback onTap})
     : this.backgroundColor = AppColors.grey,
       this.fontColor = AppColors.lightGrey,
       this.boderColor = AppColors.border,
-      // this.onTap = onTap,
+      this.onTap = onTap,
       this.label = label;
   
   @override
@@ -56,7 +56,7 @@ class ConfirmedButtonWidget extends StatelessWidget {
             BorderSide(color: boderColor)
           ),
         ),
-        onPressed: (){},//onTap, 
+        onPressed: onTap, 
         child: Text(label,
         style: GoogleFonts.notoSans(
           fontWeight: FontWeight.w600,
