@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:intl/date_symbol_data_http_request.dart';
-
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/core.dart';
 import 'package:moneyspace/shared/widgets/comfirmed_button/confirmed_button_widget.dart';
@@ -23,7 +21,10 @@ class _SelectionPageState extends State<SelectionPage> {
       if(iconRed == true){      
         newfinance["gastos descrição"] = _decricaoGastosController.text;
         newfinance["gastos valor"] = _valorController.text;
-        newfinance["gastos data"] = DateTime.now().toString();
+        final ano = DateTime.now().year;
+        final mes = DateTime.now().month;
+        newfinance["ano"] = ano.toString();
+        newfinance["mes"] = mes.toString();
         if(dropdownValue == "Gastos Essenciais") {
           newfinance["tipo de gastos"] = 1;
         } else if(dropdownValue == "Gastos Não Essenciais") {
@@ -34,7 +35,10 @@ class _SelectionPageState extends State<SelectionPage> {
       } else {
         newfinance["receita descrição"] = _decricaoGastosController.text;
         newfinance["receita valor"] = _valorController.text;
-        newfinance["receita data"] = DateTime.now().toString();
+        final ano = DateTime.now().year;
+        final mes = DateTime.now().month;
+        newfinance["ano"] = ano.toString();
+        newfinance["mes"] = mes.toString();
       }
       Navigator.pop(context, newfinance);
     });

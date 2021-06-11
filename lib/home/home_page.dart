@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'dart:io';
 
+
 import 'package:path_provider/path_provider.dart';
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/app_images.dart';
 import 'package:moneyspace/selection/selection_page.dart';
-import 'package:moneyspace/home/widget/app_bar/app_bar_widget.dart';
 import 'package:moneyspace/home/widget/porcentagem_indicator/porcentagem_indicator_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -17,30 +17,110 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {  
   
+  String _dateTime = "";
+  dynamic ano;
+  dynamic mes;
+  int i = 0;
+  List _mes = [{1:"Janeiro", 2:"Fevereiro", 3:"Março", 4:"Abril", 5:"Maio", 6:"Junho", 7:"Julho", 8:"Agosto", 9:"Setembro", 10:"Outubro", 11:"Novembro", 12:"Dezembro",}];
+  // List convertMes = [{"Janeiro": 0, "Fevereiro": 1, "Março" : 2, "Abril":3, "Maio":4, "Junho":5, "Julho":6, "Agosto":7, "Setembro":8, "Outubro":9, "Novembro":10, "Dezembro":11,}];
   List _listfinance = [];
+  //   {
+  //   "Name": "+DinDin",
+  //   "descricao": "",
+  //   "tiposdegastos": [
+  //       {
+  //         "1" : "Gastos Essenciais",
+  //         "2" : "Gastos Não Essenciais",
+  //         "3" : "Investimento"
+  //       }
+  //     ],
+  //   "carteira" : []
+  //   }
+  // ];
 
   @override
   void initState() {
     super.initState();
-    readData().then((dynamic data){
-      setState(() {
+    readData().then((dynamic data){      
+      setState(() { 
         _listfinance = json.decode(data);
+        // print("Aqui");       
+        // if(data != null){
+        //   print("Aqui 1");
+        //   _listfinance[0]["carteira"] = json.decode(data);
+        // } else if(_listfinance[0]["carteira"] != null){
+        //   print("Aqui 2");
+        //   _listfinance[0]["carteira"] = {"$ano":[{"Janeiro":[], "Fevereiro":[], "Março":[], "Abril":[], "Maio":[], "Junho":[], "Julho":[], "Agosto":[], "Setembro":[], "Outubro":[], "Novembro":[], "Dezembro":[]}]};       
+        // } else {
+        //   print("Aqui 3");
+        //   for(i=0; i < _listfinance[0]["carteira"].length; i++){
+        //     if(_listfinance[0]["carteira"][i] != ano.toString()){
+        //       if(i == _listfinance[0]["carteira"].length){
+        //         _listfinance[0]["carteira"] = {"$ano":[{"Janeiro":[], "Fevereiro":[], "Março":[], "Abril":[], "Maio":[], "Junho":[], "Julho":[], "Agosto":[], "Setembro":[], "Outubro":[], "Novembro":[], "Dezembro":[]}]};
+        //       }   
+        //     }
+        //   }
+        // }
       });        
     });    
   }
 
   void _addList(recContact) {
-    setState(() {      
+    setState(() { 
       _listfinance.add(recContact);  
-      saveData(); 
+      saveData();
+      print("Salvou!");    
     });
   }
+
+  setData() {    
+    if(_dateTime == "") {
+      ano = DateTime.now().year;
+      final mesN = DateTime.now().month;
+      mes = _mes[0][mesN]; 
+      _dateTime = "$mes / $ano";
+      return _dateTime;
+    } else {
+      return _dateTime;
+    }
+  }
+  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
             backgroundColor: AppColors.darkGreyBlack,
-            appBar: AppBarWidget(),
+            appBar: AppBar(
+              leading: GestureDetector(
+                child: Image.asset(
+                  AppImages.bars,
+                  scale: 1.8,
+                ),
+                onTap: (){},
+              ),
+              title: GestureDetector(
+                child: Text(
+                  setData()
+                ),
+                onTap:(){
+                  showDatePicker(
+                    context: context, 
+                    initialDate: DateTime.now(), 
+                    firstDate: DateTime(2020), 
+                    lastDate: DateTime(2222),
+                    locale: Locale("pt", "BR")
+                  ).then((date) => {
+                    setState((){
+                      ano = date?.year;
+                      final mesN = date?.month;
+                      mes = _mes[0][mesN];  
+                      _dateTime = "$mes / $ano";
+                    })           
+                  });
+                },
+              ),              
+              backgroundColor: AppColors.green,              
+            ),
             body: Column(
               children: [
                 Center(
@@ -175,24 +255,27 @@ class _HomePageState extends State<HomePage> {
       return Image.asset(AppImages.red);
     } else if (_listfinance[index]["tipo de gastos"] == 2) {
       return Image.asset(AppImages.yellow);
+    } else if (_listfinance[index]["tipo de gastos"] == 3){
+      return Image.asset(AppImages.green);  
     }
-    return Image.asset(AppImages.green);    
+    return Image.asset(AppImages.lock);
+      
   }
 
-  Future<File> getFile() async {
+  Future<File>_getFile() async {
     final directory = await getApplicationDocumentsDirectory();
-    return File("${directory.path}/data.json");
+    return File("${directory.path}/test1.json");
   }
 
   Future<File> saveData() async {
     String data = json.encode(_listfinance);
-    final file = await getFile();
+    final file = await _getFile();
     return file.writeAsString(data);
   }
 
   Future<String?> readData() async {
     try {
-      final file = await getFile();
+      final file = await _getFile();
       return file.readAsString();
     } catch (e) {
       return null;

@@ -15,4 +15,5 @@ class AppImages {
   static String get circlered => "assets/images/circle_red.png";
   static String get circlegreen => "assets/images/circle_green.png";
   static String get arrow => "assets/images/arrow_up.png";
+  static String get bars => "assets/images/bars.png";
 }
