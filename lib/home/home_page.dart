@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 
+import 'package:moneyspace/core/app_text_styles.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/app_images.dart';
@@ -104,25 +105,36 @@ class _HomePageState extends State<HomePage> {
                 ),
                 onTap:(){
                   showDatePicker(
-                    context: context, 
-                    initialDate: DateTime.now(), 
-                    firstDate: DateTime(2020), 
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2020),
                     lastDate: DateTime(2222),
                     locale: Locale("pt", "BR")
                   ).then((date) => {
                     setState((){
                       ano = date?.year;
                       final mesN = date?.month;
-                      mes = _mes[0][mesN];  
+                      mes = _mes[0][mesN];
                       _dateTime = "$mes / $ano";
-                    })           
+                    })
                   });
                 },
-              ),              
-              backgroundColor: AppColors.green,              
+              ),
+              backgroundColor: AppColors.green,
             ),
             body: Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                      "SALDO",
+                      style: AppTextStyles.titleSaldo
+                  ),
+                ),
+                Text(
+                  "R\$ 40,00",
+                  style: AppTextStyles.valueSaldo,
+                ),
                 Center(
                   child:
                   FloatingActionButton(
@@ -148,33 +160,100 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
-                    alignment: Alignment.center,
-                    height: 200,
-                    width: double.maxFinite,
-                    child: Expanded(
-                      child: Row(
-                        children: [
-                          PorcentagemIndicatorWidget(
-                            colorprogress: AppColors.red,
-                            value: 0.7,
-                            valueP: "75%"
-                          ),
-                          PorcentagemIndicatorWidget(
-                            colorprogress: AppColors.yellow,
-                            value: 0.3,
-                            valueP: "30%"
-                          ),
-                          PorcentagemIndicatorWidget(
-                            colorprogress: AppColors.darkGreen,
-                            value: 1,
-                            valueP: "100%"
-                          )
-                        ],
+
+                //Progress indicator
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                  alignment: Alignment.center,
+                  //height: 200,
+                  width: double.maxFinite,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            PorcentagemIndicatorWidget(
+                                colorprogress: AppColors.red,
+                                value: 0.7,
+                                valueP: "75%"
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Container(
+                                width: 53,
+                                decoration: BoxDecoration(
+                                    color: AppColors.red,
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "20%",
+                                    style: AppTextStyles.valuePorcent,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            PorcentagemIndicatorWidget(
+                                colorprogress: AppColors.darkGreen,
+                                value: 1,
+                                valueP: "100%"
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Container(
+                                width: 53,
+                                decoration: BoxDecoration(
+                                    color: AppColors.darkGreen,
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "20%",
+                                    style: AppTextStyles.valuePorcent,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Column(
+                          children: [
+                            PorcentagemIndicatorWidget(
+                                colorprogress: AppColors.yellow,
+                                value: 0.3,
+                                valueP: "30%"
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Container(
+                                width: 53,
+                                decoration: BoxDecoration(
+                                    color: AppColors.yellow,
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "20%",
+                                    style: AppTextStyles.valuePorcent,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 )
               ],

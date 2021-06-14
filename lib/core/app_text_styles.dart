@@ -114,4 +114,9 @@ class AppTextStyles {
     fontSize: 8,
     fontWeight: FontWeight.w500,
   );
+  static final TextStyle valuePorcent = GoogleFonts.notoSans(
+    color: AppColors.black,
+    fontSize: 19,
+    fontWeight: FontWeight.w800,
+  );
 }
