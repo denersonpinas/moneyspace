@@ -20,56 +20,54 @@ class _HomePageState extends State<HomePage> {
   String _dateTime = "";
   dynamic ano;
   dynamic mes;
+  dynamic l;
   int i = 0;
   List _mes = [{1:"Janeiro", 2:"Fevereiro", 3:"Março", 4:"Abril", 5:"Maio", 6:"Junho", 7:"Julho", 8:"Agosto", 9:"Setembro", 10:"Outubro", 11:"Novembro", 12:"Dezembro",}];
   // List convertMes = [{"Janeiro": 0, "Fevereiro": 1, "Março" : 2, "Abril":3, "Maio":4, "Junho":5, "Julho":6, "Agosto":7, "Setembro":8, "Outubro":9, "Novembro":10, "Dezembro":11,}];
-  List _listfinance = [];
-  //   {
-  //   "Name": "+DinDin",
-  //   "descricao": "",
-  //   "tiposdegastos": [
-  //       {
-  //         "1" : "Gastos Essenciais",
-  //         "2" : "Gastos Não Essenciais",
-  //         "3" : "Investimento"
-  //       }
-  //     ],
-  //   "carteira" : []
-  //   }
-  // ];
+  List _listfinance = [
+    {
+      "carteira": []
+    }    
+  ];
 
-  @override
-  void initState() {
-    super.initState();
-    readData().then((dynamic data){      
-      setState(() { 
-        _listfinance = json.decode(data);
-        // print("Aqui");       
-        // if(data != null){
-        //   print("Aqui 1");
-        //   _listfinance[0]["carteira"] = json.decode(data);
-        // } else if(_listfinance[0]["carteira"] != null){
-        //   print("Aqui 2");
-        //   _listfinance[0]["carteira"] = {"$ano":[{"Janeiro":[], "Fevereiro":[], "Março":[], "Abril":[], "Maio":[], "Junho":[], "Julho":[], "Agosto":[], "Setembro":[], "Outubro":[], "Novembro":[], "Dezembro":[]}]};       
-        // } else {
-        //   print("Aqui 3");
-        //   for(i=0; i < _listfinance[0]["carteira"].length; i++){
-        //     if(_listfinance[0]["carteira"][i] != ano.toString()){
-        //       if(i == _listfinance[0]["carteira"].length){
-        //         _listfinance[0]["carteira"] = {"$ano":[{"Janeiro":[], "Fevereiro":[], "Março":[], "Abril":[], "Maio":[], "Junho":[], "Julho":[], "Agosto":[], "Setembro":[], "Outubro":[], "Novembro":[], "Dezembro":[]}]};
-        //       }   
-        //     }
-        //   }
-        // }
-      });        
-    });    
+  _setCount(){
+    print(_listfinance[0]["carteira"]);
+    try {
+      if(_listfinance[0]["carteira"].length == 0){
+        print("1");
+        return 0;
+      } else if(_listfinance[0]["carteira"][0]["$ano"].length > 0 && _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length > 0) {      
+        print("2");
+        print(mes);
+        return _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;
+      } else {
+        print("3");
+        return 0;
+      }
+    } catch(e) {
+      return 0;
+    }    
   }
 
   void _addList(recContact) {
-    setState(() { 
-      _listfinance.add(recContact);  
+    setState(() {
+      if(_listfinance[0]["carteira"].length == 0){
+        _listfinance[0]["carteira"].add({"$ano":[{"$mes":[]}]});
+        if("$ano" == recContact["ano"]){
+          _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact); 
+        } else {
+          _listfinance[0]["carteira"].add({recContact["ano"]:[{recContact["mes"]:[]}]});
+          _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]].add(recContact); 
+        }
+      } else if("$ano" == recContact["ano"]){
+        _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact); 
+      } else{
+        print("else do save");
+        _listfinance[0]["carteira"].add({recContact["ano"]:[{recContact["mes"]:[]}]});
+        _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]].add(recContact);  
+      }
       saveData();
-      print("Salvou!");    
+      print("Salvou!");  
     });
   }
 
@@ -84,7 +82,19 @@ class _HomePageState extends State<HomePage> {
       return _dateTime;
     }
   }
-  
+
+  @override
+  void initState() {
+    super.initState();
+    readData().then((dynamic data){ 
+      print("fora do read");
+      setState(() {                    
+        print("dentro do read");       
+        _listfinance[0]["carteira"] = json.decode(data);
+        print(_listfinance);
+      });        
+    });    
+  }  
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +151,7 @@ class _HomePageState extends State<HomePage> {
                     width: double.maxFinite,
                     child: ListView.builder(
                       padding: EdgeInsets.all(10),
-                      itemCount: _listfinance.length,
+                      itemCount: _setCount(),
                       itemBuilder: (context, index){
                         return _gastosCard(context, index);
                       },
@@ -202,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            _listfinance[index]["gastos descrição"] != null ?  _listfinance[index]["gastos descrição"].toString() : _listfinance[index]["receita descrição"] != null ?  _listfinance[index]["receita descrição"].toString() : "",
+                            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos descrição"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos descrição"].toString() : _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita descrição"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita descrição"].toString() : "",
                             style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -210,7 +220,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            _listfinance[index]["gastos data"] != null ?  _listfinance[index]["gastos data"].toString() : _listfinance[index]["receita data"] != null ?  _listfinance[index]["receita data"].toString() : "",
+                            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos data"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos data"].toString() : _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita data"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita data"].toString() : "",
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.white
@@ -225,7 +235,7 @@ class _HomePageState extends State<HomePage> {
               Container(
                 child:
                   Text(
-                    _listfinance[index]["gastos valor"] != null ?  _listfinance[index]["gastos valor"].toString() : _listfinance[index]["receita valor"] != null ?  _listfinance[index]["receita valor"].toString() : "",
+                    _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos valor"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos valor"].toString() : _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita valor"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita valor"].toString() : "",
                     style: TextStyle(
                       fontSize: 22,
                       color: Colors.white
@@ -249,13 +259,13 @@ class _HomePageState extends State<HomePage> {
   }  
 
   Image selectImage(int index) {
-    if(_listfinance[index]["receita descrição"] != null){
+    if( _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita descrição"] != null){
       return Image.asset(AppImages.arrow);
-    } else if (_listfinance[index]["tipo de gastos"] == 1) {
+    } else if ( _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["tipo de gastos"] == 1) {
       return Image.asset(AppImages.red);
-    } else if (_listfinance[index]["tipo de gastos"] == 2) {
+    } else if ( _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["tipo de gastos"] == 2) {
       return Image.asset(AppImages.yellow);
-    } else if (_listfinance[index]["tipo de gastos"] == 3){
+    } else if ( _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["tipo de gastos"] == 3){
       return Image.asset(AppImages.green);  
     }
     return Image.asset(AppImages.lock);
@@ -264,11 +274,11 @@ class _HomePageState extends State<HomePage> {
 
   Future<File>_getFile() async {
     final directory = await getApplicationDocumentsDirectory();
-    return File("${directory.path}/test1.json");
+    return File("${directory.path}/test12.json");
   }
 
   Future<File> saveData() async {
-    String data = json.encode(_listfinance);
+    String data = json.encode(_listfinance[0]["carteira"]);
     final file = await _getFile();
     return file.writeAsString(data);
   }
