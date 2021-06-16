@@ -303,42 +303,42 @@ class _SelectionPageState extends State<SelectionPage> {
               SizedBox(
                 height: 10,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(AppColors.greyBlack),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(borderRadius: 
-                            BorderRadius.circular(10)
-                          )
-                        ),
-                      ),
-                      child: 
-                      Padding(
-                        padding: const EdgeInsets.all(12),
-                        child:
-                        setText()
-                      ),
-                      onPressed: () {
-                        showDatePicker(
-                          context: context, 
-                          initialDate: DateTime.now(), 
-                          firstDate: DateTime(2020), 
-                          lastDate: DateTime(2222),
-                          locale: Locale("pt", "BR")
-                        ).then((date) => {
-                          setState((){
-                            _dateTime = date;
-                          })                        
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //   children: [
+              //     Expanded(
+              //       child: TextButton(
+              //         style: ButtonStyle(
+              //           backgroundColor: MaterialStateProperty.all(AppColors.greyBlack),
+              //           shape: MaterialStateProperty.all(
+              //             RoundedRectangleBorder(borderRadius: 
+              //               BorderRadius.circular(10)
+              //             )
+              //           ),
+              //         ),
+              //         child: 
+              //         Padding(
+              //           padding: const EdgeInsets.all(12),
+              //           child:
+              //           setText()
+              //         ),
+              //         onPressed: () {
+              //           showDatePicker(
+              //             context: context, 
+              //             initialDate: DateTime.now(), 
+              //             firstDate: DateTime(2020), 
+              //             lastDate: DateTime(2222),
+              //             locale: Locale("pt", "BR")
+              //           ).then((date) => {
+              //             setState((){
+              //               _dateTime = date;
+              //             })                        
+              //           });
+              //         },
+              //       ),
+              //     ),
+              //   ],
+              // ),
               SizedBox(
                 height: 20,
               ),

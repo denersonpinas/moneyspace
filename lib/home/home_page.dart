@@ -4,11 +4,11 @@ import 'dart:io';
 
 
 import 'package:moneyspace/core/app_text_styles.dart';
+import 'package:moneyspace/home/widget/chart/chart_widget.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/app_images.dart';
 import 'package:moneyspace/selection/selection_page.dart';
-import 'package:moneyspace/home/widget/porcentagem_indicator/porcentagem_indicator_widget.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,30 +24,46 @@ class _HomePageState extends State<HomePage> {
   dynamic l;
   int i = 0;
   List _mes = [{1:"Janeiro", 2:"Fevereiro", 3:"Março", 4:"Abril", 5:"Maio", 6:"Junho", 7:"Julho", 8:"Agosto", 9:"Setembro", 10:"Outubro", 11:"Novembro", 12:"Dezembro",}];
-  // List convertMes = [{"Janeiro": 0, "Fevereiro": 1, "Março" : 2, "Abril":3, "Maio":4, "Junho":5, "Julho":6, "Agosto":7, "Setembro":8, "Outubro":9, "Novembro":10, "Dezembro":11,}];
   List _listfinance = [
     {
       "carteira": []
     }    
   ];
+  late Map<String, dynamic> _lastRemoved;
+  late int _lastRemovedPos;
 
   _setCount(){
-    print(_listfinance[0]["carteira"]);
     try {
       if(_listfinance[0]["carteira"].length == 0){
-        print("1");
         return 0;
       } else if(_listfinance[0]["carteira"][0]["$ano"].length > 0 && _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length > 0) {      
-        print("2");
-        print(mes);
         return _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;
       } else {
-        print("3");
         return 0;
       }
     } catch(e) {
       return 0;
     }    
+  }
+
+  _setSaldo(){
+    if(_setCount() == 0){
+        return "0,00";
+    } else if(_setCount() > 0) {      
+        double calcsaldo = 0;      
+        double calcgastos = 0;
+        for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
+          if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null){
+            calcgastos = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastos;
+          } else {
+            calcsaldo = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldo;
+          }     
+        }       
+        final result = calcsaldo - calcgastos;
+        return result.toString();
+    } else {
+        return "0,00";
+    }
   }
 
   void _addList(recContact) {
@@ -63,12 +79,10 @@ class _HomePageState extends State<HomePage> {
       } else if("$ano" == recContact["ano"]){
         _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact); 
       } else{
-        print("else do save");
         _listfinance[0]["carteira"].add({recContact["ano"]:[{recContact["mes"]:[]}]});
         _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]].add(recContact);  
       }
       saveData();
-      print("Salvou!");  
     });
   }
 
@@ -84,15 +98,39 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  _setPercent(tipo){
+    if(_setCount() == 0){
+        return 0;
+    } else if(_setCount() > 0) {      
+        double calcsaldo = 0;      
+        double calcgastostipo = 0;
+        double result = 0;
+        setState(() {
+          for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
+            if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null){
+              calcsaldo = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldo;
+            }     
+          }
+          for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
+            if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null && _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["tipo de gastos"] == tipo){
+              calcgastostipo = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastostipo;
+            }     
+          } 
+
+          result = calcgastostipo / (calcsaldo * 0.33);                     
+        });
+        return result;               
+    } else {
+        return 0;
+    }
+  }
+  
   @override
   void initState() {
     super.initState();
     readData().then((dynamic data){ 
-      print("fora do read");
       setState(() {                    
-        print("dentro do read");       
         _listfinance[0]["carteira"] = json.decode(data);
-        print(_listfinance);
       });        
     });    
   }  
@@ -142,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Text(
-                  "R\$ 40,00",
+                  "R\$ "+_setSaldo(),
                   style: AppTextStyles.valueSaldo,
                 ),
                 Center(
@@ -175,94 +213,24 @@ class _HomePageState extends State<HomePage> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                   alignment: Alignment.center,
-                  //height: 200,
                   width: double.maxFinite,
                   child: Row(
                     children: [
                       Expanded(
                         flex: 2,
-                        child: Column(
-                          children: [
-                            PorcentagemIndicatorWidget(
-                                colorprogress: AppColors.red,
-                                value: 0.7,
-                                valueP: "75%"
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Container(
-                                width: 53,
-                                decoration: BoxDecoration(
-                                    color: AppColors.red,
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "20%",
-                                    style: AppTextStyles.valuePorcent,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                        child: ChartWidget(
+                          percent: _setPercent(1),
+                        )),                        
                       Expanded(
                         flex: 2,
-                        child: Column(
-                          children: [
-                            PorcentagemIndicatorWidget(
-                                colorprogress: AppColors.darkGreen,
-                                value: 1,
-                                valueP: "100%"
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Container(
-                                width: 53,
-                                decoration: BoxDecoration(
-                                    color: AppColors.darkGreen,
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "20%",
-                                    style: AppTextStyles.valuePorcent,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                        child: ChartWidget(
+                          percent: _setPercent(2),
+                        )),                        
                       Expanded(
                         flex: 2,
-                        child: Column(
-                          children: [
-                            PorcentagemIndicatorWidget(
-                                colorprogress: AppColors.yellow,
-                                value: 0.3,
-                                valueP: "30%"
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: Container(
-                                width: 53,
-                                decoration: BoxDecoration(
-                                    color: AppColors.yellow,
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "20%",
-                                    style: AppTextStyles.valuePorcent,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                        child: ChartWidget(
+                          percent: _setPercent(3),
+                        )),                        
                     ],
                   ),
                 )
@@ -272,61 +240,102 @@ class _HomePageState extends State<HomePage> {
       }
 
   Widget _gastosCard(BuildContext context, int index){
-    return GestureDetector(
-      child: Card(
-        color: AppColors.darkGreyBlack,
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                child:
-                Row(                  
-                  children: [
-                    selectImage(index),
-                    Padding(
-                      padding: EdgeInsets.only(left:10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos descrição"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos descrição"].toString() : _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita descrição"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita descrição"].toString() : "",
-                            style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white
-                            ),
-                          ),
-                          Text(
-                            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos data"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos data"].toString() : _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita data"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita data"].toString() : "",
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ]
-                )                
-              ),
-              Container(
-                child:
-                  Text(
-                    _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos valor"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos valor"].toString() : _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita valor"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita valor"].toString() : "",
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: Colors.white
-                    ),
-                  ),
-              )             
-            ]
-          ),
-        )
+    return Dismissible(
+      key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
+      background: Container(
+        color: AppColors.red,
+        child: Align(
+          alignment: Alignment(-0.9,0.0),
+          child: Icon(
+            Icons.delete,
+            color: Colors.white
+          )
+        ),
       ),
+      direction: DismissDirection.startToEnd,
+      child: GestureDetector(
+        child: Card(
+          color: AppColors.darkGreyBlack,
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  child:
+                  Row(                  
+                    children: [
+                      selectImage(index),
+                      Padding(
+                        padding: EdgeInsets.only(left:10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos descrição"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos descrição"].toString() : _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita descrição"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita descrição"].toString() : "",
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white
+                              ),
+                            ),
+                            Text(
+                              _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos data"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos data"].toString() : _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita data"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita data"].toString() : "",
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.white
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ]
+                  )                
+                ),
+                Container(
+                  child:
+                    Text(
+                      _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos valor"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["gastos valor"].toString() : _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita valor"] != null ?  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]["receita valor"].toString() : "",
+                      style: TextStyle(
+                        fontSize: 22,
+                        color: Colors.white
+                      ),
+                    ),
+                )             
+              ]
+            ),
+          )
+        ),
+      ),
+      onDismissed: (direction){
+        setState(() {
+          _lastRemoved = Map.from(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]);
+          _lastRemovedPos = index;
+          _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].removeAt(index);
+
+          saveData();
+
+          final snack = SnackBar(
+            content: Text("Aplicação removida!"),
+            action: SnackBarAction(
+              label: "Desfazer",
+              onPressed: (){
+                setState(() {
+                  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].insert(_lastRemovedPos, _lastRemoved);
+                  saveData();
+                });                
+              },
+            ),
+            duration: Duration(seconds: 2),
+          );
+
+          ScaffoldMessenger.of(context).showSnackBar(snack);
+        });        
+      },
     );
   }
+
+  
 
   void _showSelectionPage() async {
     final recContact = await Navigator.push(context,
@@ -353,7 +362,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<File>_getFile() async {
     final directory = await getApplicationDocumentsDirectory();
-    return File("${directory.path}/test12.json");
+    return File("${directory.path}/test1.json");
   }
 
   Future<File> saveData() async {
