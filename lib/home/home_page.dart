@@ -7,6 +7,7 @@ import 'package:moneyspace/admin/login_page.dart';
 import 'package:moneyspace/core/app_text_styles.dart';
 import 'package:moneyspace/home/widget/chart/chart_widget.dart';
 import 'package:moneyspace/home/widget/percentual/percentual_widget.dart';
+import 'package:moneyspace/shared/database/database_page.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/app_images.dart';
@@ -19,9 +20,10 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> {  
 
-  double soma = 0;
+  String _iforText = "";
+  
   String _dateTime = "";
   dynamic ano;
   dynamic mes;
@@ -51,42 +53,92 @@ class _HomePageState extends State<HomePage> {
   }
 
   _setSaldo(){
+    return (_setSaldoReceita() - _setSaldoTotGastos()).toString();
+  }
+
+  _setSaldoTotGastos(){
     if(_setCount() == 0){
-        return "0,00";
-    } else if(_setCount() > 0) {      
-        double calcsaldo = 0;      
+        return 0.0;
+    } else if(_setCount() > 0) {     
         double calcgastos = 0;
         for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
           if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null){
             calcgastos = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastos;
-          } else {
-            calcsaldo = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldo;
-          }     
+          }    
         }       
-        final result = calcsaldo - calcgastos;
-        return result.toString();
+        return calcgastos;
     } else {
-        return "0,00";
+        return 0.0;
     }
   }
 
-  void _addList(recContact) {
+  _setSaldoReceita(){
+    if(_setCount() == 0){
+        return 0.0;
+    } else if(_setCount() > 0) {      
+        double calcsaldoReceita = 0;  
+        for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
+          if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null){
+            calcsaldoReceita = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldoReceita;
+          }     
+        }
+        return calcsaldoReceita;
+    } else {
+        return 0.0;
+    }
+  }  
+
+  _addList(recContact) {
     setState(() {
       if(_listfinance[0]["carteira"].length == 0){
         _listfinance[0]["carteira"].add({"$ano":[{"$mes":[]}]});
         if("$ano" == recContact["ano"]){
-          _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact); 
+          if(recContact["receita valor"] != null){
+            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
+            setState(() {
+                _iforText = "";
+            });
+          } else {
+            double percent = _setSaldoReceita() * 0.33;
+            if(percent < num.parse(recContact["gastos valor"])) {
+              setState(() {
+                _iforText = "Aumente sua receita, sinal lotado!";
+              });
+            } else {
+              _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
+              setState(() {
+                _iforText = "";
+              });
+            }
+          }           
         } else {
           _listfinance[0]["carteira"].add({recContact["ano"]:[{recContact["mes"]:[]}]});
           _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]].add(recContact); 
         }
       } else if("$ano" == recContact["ano"]){
-        _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact); 
+          if(recContact["receita valor"] != null){
+            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
+            setState(() {
+              _iforText = "";
+            });
+          } else {
+            double percent = _setSaldoReceita() * 0.33;
+            if(percent < num.parse(recContact["gastos valor"])) {
+              setState(() {
+                _iforText = "Aumente sua receita, sinal lotado!";
+              });
+            } else {
+              _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
+              setState(() {
+                _iforText = "";
+              });
+            }
+          }
       } else{
         _listfinance[0]["carteira"].add({recContact["ano"]:[{recContact["mes"]:[]}]});
         _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]].add(recContact);  
       }
-      saveData();
+      saveData(_listfinance);
     });
   }
 
@@ -104,28 +156,22 @@ class _HomePageState extends State<HomePage> {
 
   _setPercent(tipo){
     if(_setCount() == 0){
-        return 0.0;
-    } else if(_setCount() > 0) {      
-        double calcsaldo = 0;      
+        return 0.33;
+    } else if(_setCount() > 0) {     
         double calcgastostipo = 0;
         double result = 0;
+        
+        for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
+          if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null && _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["tipo de gastos"] == tipo){
+            calcgastostipo = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastostipo;
+          }     
+        }
         setState(() {
-          for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
-            if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null){
-              calcsaldo = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldo;
-            }     
-          }
-          for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
-            if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null && _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["tipo de gastos"] == tipo){
-              calcgastostipo = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastostipo;
-            }     
-          } 
-
-          result = calcgastostipo / (calcsaldo * 0.33);                     
+          result = calcgastostipo / (_setSaldoReceita() * 0.33);                     
         });
-        return result;               
+        return num.parse(result.toStringAsPrecision(2));               
     } else {
-        return 0;
+        return 0.0;
     }
   }
   
@@ -251,7 +297,16 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  _iforText,
+                  style: AppTextStyles.bodyBold,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 //Progress indicator
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -264,18 +319,21 @@ class _HomePageState extends State<HomePage> {
                         child: ChartWidget(
                           percent: _setPercent(1),
                           varPercent: 50,
+                          label: "vermelho",
                         )),
                       Expanded(
                         flex: 2,
                         child: ChartWidget(
                           percent: _setPercent(2),
                           varPercent: 30,
+                          label: "amarelo",
                         )),                        
                       Expanded(
                         flex: 2,
                         child: ChartWidget(
                           percent: _setPercent(3),
                           varPercent: 20,
+                          label: "verde",
                         )),                        
                     ],
                   ),
@@ -359,7 +417,7 @@ class _HomePageState extends State<HomePage> {
           _lastRemovedPos = index;
           _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].removeAt(index);
 
-          saveData();
+          saveData(_listfinance);
 
           final snack = SnackBar(
             content: Text("Aplicação removida!"),
@@ -368,7 +426,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: (){
                 setState(() {
                   _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].insert(_lastRemovedPos, _lastRemoved);
-                  saveData();
+                  saveData(_listfinance);
                 });                
               },
             ),
@@ -379,9 +437,7 @@ class _HomePageState extends State<HomePage> {
         });        
       },
     );
-  }
-
-  
+  }  
 
   void _showSelectionPage() async {
     final recContact = await Navigator.push(context,
@@ -404,25 +460,5 @@ class _HomePageState extends State<HomePage> {
     }
     return Image.asset(AppImages.lock);
       
-  }
-
-  Future<File>_getFile() async {
-    final directory = await getApplicationDocumentsDirectory();
-    return File("${directory.path}/test1.json");
-  }
-
-  Future<File> saveData() async {
-    String data = json.encode(_listfinance[0]["carteira"]);
-    final file = await _getFile();
-    return file.writeAsString(data);
-  }
-
-  Future<String?> readData() async {
-    try {
-      final file = await _getFile();
-      return file.readAsString();
-    } catch (e) {
-      return null;
-    }
-  }
+  }  
 }
