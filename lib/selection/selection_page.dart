@@ -78,7 +78,7 @@ class _SelectionPageState extends State<SelectionPage> {
     _dateTime = null;
     dropdownValue = null;
     iconRed = false;
-    iconGreen = false;
+    iconGreen = true;
   }
 
   setText() {
@@ -124,7 +124,7 @@ class _SelectionPageState extends State<SelectionPage> {
   setIconRed() {
     if(iconRed == false) {
       return AppImages.circle;
-    } if(iconGreen == false) { 
+    } else if(iconGreen == false) { 
       return AppImages.circlered;
     }
   }
@@ -132,7 +132,7 @@ class _SelectionPageState extends State<SelectionPage> {
   setIconGreen() {
       if(iconGreen == false) {
         return AppImages.circle;
-      } if(iconRed == false) { 
+      } else if(iconRed == false) { 
         return AppImages.circlegreen;
       }
   }

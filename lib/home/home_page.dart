@@ -1,12 +1,8 @@
 import 'dart:convert';
 
-import 'dart:io';
-
-
 import 'package:moneyspace/core/app_text_styles.dart';
 import 'package:moneyspace/home/widget/chart/chart_widget.dart';
 import 'package:moneyspace/shared/database/database_page.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/app_images.dart';
 import 'package:moneyspace/selection/selection_page.dart';
@@ -20,6 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {  
 
   String _iforText = "";
+  late double percent;
   
   String _dateTime = "";
   dynamic ano;
@@ -33,7 +30,7 @@ class _HomePageState extends State<HomePage> {
     }    
   ];
   late Map<String, dynamic> _lastRemoved;
-  late int _lastRemovedPos;
+  late int _lastRemovedPos;  
 
   _setCount(){
     try {
@@ -71,7 +68,7 @@ class _HomePageState extends State<HomePage> {
 
   _setSaldoReceita(){
     if(_setCount() == 0){
-        return 0.0;
+        return 0.00;
     } else if(_setCount() > 0) {      
         double calcsaldoReceita = 0;  
         for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
@@ -81,7 +78,7 @@ class _HomePageState extends State<HomePage> {
         }
         return calcsaldoReceita;
     } else {
-        return 0.0;
+        return 0.00;
     }
   }  
 
@@ -153,7 +150,9 @@ class _HomePageState extends State<HomePage> {
 
   _setPercent(tipo){
     if(_setCount() == 0){
-        return 0.33;
+      setState(() {
+        percent = 0.5;
+      });        
     } else if(_setCount() > 0) {     
         double calcgastostipo = 0;
         double result = 0;
@@ -164,12 +163,14 @@ class _HomePageState extends State<HomePage> {
           }     
         }
         setState(() {
-          result = calcgastostipo / (_setSaldoReceita() * 0.33);                     
-        });
-        return num.parse(result.toStringAsPrecision(2));               
+          result = calcgastostipo / (_setSaldoReceita() * 0.33);   
+          percent = result;                  
+        });        
+        // num.parse(result.toStringAsPrecision(2));               
     } else {
-        return 0.0;
+        percent = 0.0;
     }
+    return percent;
   }
   
   @override
