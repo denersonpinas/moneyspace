@@ -15,6 +15,8 @@ class _SelectionPageState extends State<SelectionPage> {
   final _decricaoGastosController = TextEditingController();
   final _valorController = TextEditingController();  
 
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   void _addTodo() {
     setState(() {
       Map<String, dynamic> newfinance = Map();
@@ -42,6 +44,12 @@ class _SelectionPageState extends State<SelectionPage> {
       }
       Navigator.pop(context, newfinance);
     });
+  }
+
+  _valid(){
+    if(_formKey.currentState!.validate()){
+      _addTodo();
+    }
   }
 
   late DateTime? _dateTime;
@@ -214,141 +222,106 @@ class _SelectionPageState extends State<SelectionPage> {
         centerTitle: true,
       ),
       backgroundColor: AppColors.darkGreyBlack,
-      body: Container(
-        child: Padding(
-          padding: EdgeInsets.only(left: 31, right: 31, top: 100),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  //SelectionButtonWidget()
-                  
-                  Column(
-                    children: [
-                      GestureDetector(
-                        child: Image.asset(
-                          setIconRed(),
-                          scale: 1.5
-                        ),
-                        // Image: setIconRed(), 
-                        onTap: () {
-                          setState(() {
-                            iconRed = true;
-                            iconGreen = false;
-                          });                    
-                        }
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        "Despesa",
-                        style: AppTextStyles.heading15,
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  ),
-                  Text(
-                      "OU",
-                      style: AppTextStyles.heading40                                        
-                  ),
-                  Column(
-                    children: [
-                      GestureDetector(
-                        child:
-                          Image.asset(
-                            setIconGreen(),
+      body: Form(
+        key: _formKey,
+        child: Container(
+          child: Padding(
+            padding: EdgeInsets.only(left: 31, right: 31, top: 100),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [                    
+                    Column(
+                      children: [
+                        GestureDetector(
+                          child: Image.asset(
+                            setIconRed(),
                             scale: 1.5
-                          ), 
+                          ),
+                          // Image: setIconRed(), 
                           onTap: () {
                             setState(() {
-                              iconGreen = true;
-                              iconRed = false;
+                              iconRed = true;
+                              iconGreen = false;
                             });                    
                           }
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        "Receita",
-                        style: AppTextStyles.heading15,
-                        textAlign: TextAlign.center,
-                      )
-                    ],
-                  )
-                ]),
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              setFarol(),
-              SizedBox(
-                height: 10,
-              ),
-              TextFieldWidget(
-                label: "Cafézinho",
-                nameController: _decricaoGastosController,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              TextFieldWidget(
-                label: "3,75",
-                nameController: _valorController,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //   children: [
-              //     Expanded(
-              //       child: TextButton(
-              //         style: ButtonStyle(
-              //           backgroundColor: MaterialStateProperty.all(AppColors.greyBlack),
-              //           shape: MaterialStateProperty.all(
-              //             RoundedRectangleBorder(borderRadius: 
-              //               BorderRadius.circular(10)
-              //             )
-              //           ),
-              //         ),
-              //         child: 
-              //         Padding(
-              //           padding: const EdgeInsets.all(12),
-              //           child:
-              //           setText()
-              //         ),
-              //         onPressed: () {
-              //           showDatePicker(
-              //             context: context, 
-              //             initialDate: DateTime.now(), 
-              //             firstDate: DateTime(2020), 
-              //             lastDate: DateTime(2222),
-              //             locale: Locale("pt", "BR")
-              //           ).then((date) => {
-              //             setState((){
-              //               _dateTime = date;
-              //             })                        
-              //           });
-              //         },
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(child: ConfirmedButtonWidget.green(label: "Adicionar", onTap: _addTodo,)),
-                ],
-              ),
-            ]
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "Despesa",
+                          style: AppTextStyles.heading15,
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                    Text(
+                        "OU",
+                        style: AppTextStyles.heading40                                        
+                    ),
+                    Column(
+                      children: [
+                        GestureDetector(
+                          child:
+                            Image.asset(
+                              setIconGreen(),
+                              scale: 1.5
+                            ), 
+                            onTap: () {
+                              setState(() {
+                                iconGreen = true;
+                                iconRed = false;
+                              });                    
+                            }
+                        ),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                          "Receita",
+                          style: AppTextStyles.heading15,
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    )
+                  ]),
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                setFarol(),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFieldWidget(
+                  label: "Descrição",
+                  nameController: _decricaoGastosController,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextFieldWidget(
+                  label: "10000.00",
+                  nameController: _valorController,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(child: ConfirmedButtonWidget.green(label: "Adicionar", onTap: _valid)),
+                  ],
+                ),
+              ]
+            ),
           ),
         ),
       ),

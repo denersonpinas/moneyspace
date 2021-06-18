@@ -1,7 +1,8 @@
+import 'package:flutter/services.dart';
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class TextFieldWidget extends StatelessWidget {
+class TextFieldWidget extends StatefulWidget {
   final String label;
   final TextEditingController nameController;
 
@@ -9,30 +10,40 @@ class TextFieldWidget extends StatelessWidget {
     Key? key, 
     required  this.label,
     required this.nameController, 
-  }) : assert(["Nome ou Apelido", "3,75", "Cafézinho",].contains(label)), super(key: key);
+  }) : assert(["Nome ou Apelido", "10000.00", "Descrição",].contains(label)), super(key: key);
 
   final config = {
     "Nome ou Apelido" : {
-      "icon" : Icons.supervised_user_circle
+      "icon" : Icons.supervised_user_circle,
+      "inputType": TextInputType.text
     },
-    "3,75" : {
-      "icon" : Icons.attach_money
+    "10000.00" : {
+      "icon" : Icons.attach_money,
+      "inputType": TextInputType.numberWithOptions(decimal: true)
     },
-    "Cafézinho" : {
-      "icon" : Icons.comment
+    "Descrição" : {
+      "icon" : Icons.comment,
+      "inputType": TextInputType.text
     },
   };
 
-  IconData get icon => config[label]!['icon']!;
+  get icon => config[label]!['icon']!;
+  get inputType => config[label]!['inputType']!;
 
   @override
+  _TextFieldWidgetState createState() => _TextFieldWidgetState();
+}
+
+class _TextFieldWidgetState extends State<TextFieldWidget> {
+  
+  @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: nameController,
+    return TextFormField(
+      controller: widget.nameController,
       decoration: InputDecoration(
         filled: true,
         fillColor: AppColors.greyBlack,
-        hintText: label,
+        hintText: widget.label,
         hintStyle: TextStyle(color: AppColors.lightGrey),
         focusedBorder: OutlineInputBorder(
           borderSide: new BorderSide(color: AppColors.greyBlack),
@@ -43,7 +54,7 @@ class TextFieldWidget extends StatelessWidget {
           borderRadius: new BorderRadius.circular(10),
         ),
         prefixIcon: Icon(
-          icon,
+          widget.icon,
           color: AppColors.green,
         ),
       ),
@@ -51,6 +62,12 @@ class TextFieldWidget extends StatelessWidget {
         color: AppColors.lightGreen,
         fontSize: 18,
       ),
+      keyboardType: widget.inputType,
+      validator: (value){
+        if(value!.isEmpty){
+          return"Este campo é obrigatório!";
+        }
+      },
     );
   }            
 }
