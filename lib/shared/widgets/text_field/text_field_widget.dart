@@ -9,7 +9,7 @@ class TextFieldWidget extends StatelessWidget {
     Key? key, 
     required  this.label,
     required this.nameController, 
-  }) : assert(["Nome ou Apelido", "3,75", "Cafézinho",].contains(label)), super(key: key);
+  }) : assert(["Nome ou Apelido", "3,75", "Cafézinho", "Gastos Essenciais(%)", "Gastos Não Essenciais(%)", "Investimentos(%)"].contains(label)), super(key: key);
 
   final config = {
     "Nome ou Apelido" : {
@@ -20,6 +20,15 @@ class TextFieldWidget extends StatelessWidget {
     },
     "Cafézinho" : {
       "icon" : Icons.comment
+    },
+    "Gastos Essenciais(%)" : {
+      "icon" : Icons.account_balance_wallet_sharp
+    },
+    "Gastos Não Essenciais(%)" : {
+      "icon" : Icons.local_airport_outlined
+    },
+    "Investimentos(%)" : {
+      "icon" : Icons.attach_money
     },
   };
 

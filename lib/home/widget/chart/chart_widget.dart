@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 
 class ChartWidget extends StatefulWidget {
   final double percent;
+  final double varPercent;
   const ChartWidget({
     Key? key,
-    required this.percent
+    required this.percent,
+    required this.varPercent
   }) : super(key: key);
 
   @override
@@ -71,17 +73,17 @@ class _ChartWidgetState extends State<ChartWidget>
           child: Container(
             width: 53,
             decoration: BoxDecoration(
-              color: AppColors.red,
-              borderRadius: BorderRadius.circular(10)
+                color: AppColors.red,
+                borderRadius: BorderRadius.circular(10)
             ),
             child: Center(
               child: Text(
-                "33%",
+                "${widget.varPercent}%",
                 style: AppTextStyles.valuePorcent,
               ),
             ),
           ),
-        ),
+        )
       ],
     );
   }
