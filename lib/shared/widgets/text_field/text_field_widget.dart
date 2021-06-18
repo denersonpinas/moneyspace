@@ -26,13 +26,16 @@ class TextFieldWidget extends StatefulWidget {
       "inputType": TextInputType.text
     },
     "Gastos Essenciais(%)" : {
-      "icon" : Icons.account_balance_wallet_sharp
+      "icon" : Icons.account_balance_wallet_sharp,
+      "inputType": TextInputType.number
     },
     "Gastos Não Essenciais(%)" : {
-      "icon" : Icons.local_airport_outlined
+      "icon" : Icons.local_airport_outlined,
+      "inputType": TextInputType.number
     },
     "Investimentos(%)" : {
-      "icon" : Icons.attach_money
+      "icon" : Icons.attach_money,
+      "inputType": TextInputType.number
     },
   };
 

@@ -12,6 +12,22 @@ class PercentualWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    List _listpercentual = [
+
+    ];
+
+    void _addTopercent() {
+      Map<String, dynamic> newpercentual = Map();
+
+      newpercentual["gastos essenciais"] = _typeOneController.text;
+      newpercentual["gastos não essenciais"] = _typeTwoController.text;
+      newpercentual["investimentos"] = _typeThreeController.text;
+
+      _listpercentual.add(newpercentual);
+      // Navigator.pop(context, newfinance);
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.green,
@@ -55,8 +71,18 @@ class PercentualWidget extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Expanded(child: ConfirmedButtonWidget.green(label: "Adicionar", onTap: () {
+                        Expanded(child: ConfirmedButtonWidget.green(label: "Alterar", onTap: () {
+                          // _addTopercent();
+                          print('Deu ruim');
+                          print(_listpercentual);
 
+                          // if(int.parse(_typeOneController.text) + int.parse(_typeTwoController.text) + int.parse(_typeThreeController.text) == 100){
+                          //   print('Deu 100');
+                          // }else{
+                          //   _addTopercent();
+                          //   print('Deu ruim');
+                          //   print(_listpercentual);
+                          // }
                         })),
                       ],
                     ),

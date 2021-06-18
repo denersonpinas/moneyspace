@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ChartWidget extends StatefulWidget {
   final String label;
   final double percent;
-  final double varPercent;
+  final int varPercent;
 
   ChartWidget({
     Key? key,
@@ -104,7 +104,7 @@ class _ChartWidgetState extends State<ChartWidget>
             child: Center(
               child: Text(
                 "${widget.varPercent}%",
-                style: AppTextStyles.valuePorcent,                
+                style: AppTextStyles.valuePorcent
               ),
             ),
           ),
