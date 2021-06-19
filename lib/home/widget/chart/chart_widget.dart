@@ -35,61 +35,72 @@ class ChartWidget extends StatefulWidget {
   @override
   _ChartWidgetState createState() => _ChartWidgetState();
 }
-
+const two_PI = 3.14 * 2;
 class _ChartWidgetState extends State<ChartWidget> 
   with SingleTickerProviderStateMixin {
-  
-  late AnimationController _controller;
-  late Animation<double> _animation;
-
-  void _initAnimation() { 
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 3)
-    );
-    setState(() {
-      _animation = Tween<double>(begin: 0.0, end: widget.percent).animate(_controller);
-    });    
-    _controller.forward();
-  }
 
   @override
   void initState() {
-    _initAnimation(); 
     super.initState();
   }
-
+  final size = 100.0;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return Column(
       children: [
-        Container(
-          height: 80,
-          width: 80,
-          child: AnimatedBuilder(
-            animation: _animation,
-            builder: (context, _)=> Stack(
-              children: [
-                Center(
-                  child: Container(
-                    height: 80,
-                    width: 80,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 10,
-                      value: _animation.value,
-                      backgroundColor: widget.bgCor,
-                      valueColor: AlwaysStoppedAnimation<Color>(widget.cor),
+        Center(
+          child: TweenAnimationBuilder(
+            tween: Tween(begin: 0.0,end: widget.percent),
+            duration: Duration(seconds: 4),
+            builder: (context,double value,child){
+              int percentage = (value*100).ceil();
+              return Container(
+                width: size,
+                height: size,
+                child: Stack(
+                  children: [
+                    ShaderMask(
+                      shaderCallback: (rect){
+                        return SweepGradient(
+                            startAngle: 0.0,
+                            endAngle: two_PI,
+                            stops: [value,value],
+                            center: Alignment.center,
+                            colors: [widget.cor,widget.bgCor]
+                        ).createShader(rect);
+                      },
+                      child: Container(
+                        width: size,
+                        height: size,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.white
+                            // image: DecorationImage(image: Image.asset("assets/images/radial_scale.png").image)
+                        ),
+                      ),
                     ),
-                  ),
+                    Center(
+                      child: Container(
+                        width: size-20,
+                        height: size-20,
+                        decoration: BoxDecoration(
+                            color: AppColors.darkGreyBlack,
+                            shape: BoxShape.circle
+                        ),
+                        child: Center(
+                          child: 
+                            Text(
+                              "$percentage %",
+                              style: AppTextStyles.body20,
+                            )
+                        ),
+                      )
+                    )
+                  ],
                 ),
-                Center(
-                  child: Text("${(_animation.value * 100).toInt()}%",
-                    style: AppTextStyles.heading,
-                  ),
-                )
-              ],
-            ),
-          ),
+              );
+            },
+          )
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10),

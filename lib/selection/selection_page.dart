@@ -17,32 +17,41 @@ class _SelectionPageState extends State<SelectionPage> {
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  String _infoText = "";
+
   void _addTodo() {
     setState(() {
       Map<String, dynamic> newfinance = Map();
-      if(iconRed == true){      
-        newfinance["gastos descrição"] = _decricaoGastosController.text;
-        newfinance["gastos valor"] = _valorController.text;
-        final ano = DateTime.now().year;
-        final mes = DateTime.now().month;
-        newfinance["ano"] = ano.toString();
-        newfinance["mes"] = mes.toString();
-        if(dropdownValue == "Gastos Essenciais") {
-          newfinance["tipo de gastos"] = 1;
-        } else if(dropdownValue == "Gastos Não Essenciais") {
-          newfinance["tipo de gastos"] = 2;
+      if(double.parse(_valorController.text) > 0){
+        if(iconRed == true){      
+          newfinance["gastos descrição"] = _decricaoGastosController.text;
+          newfinance["gastos valor"] = _valorController.text;
+          final ano = DateTime.now().year;
+          final mes = DateTime.now().month;
+          newfinance["ano"] = ano.toString();
+          newfinance["mes"] = mes.toString();
+          if(dropdownValue == "Gastos Essenciais") {
+            newfinance["tipo de gastos"] = 1;
+          } else if(dropdownValue == "Gastos Não Essenciais") {
+            newfinance["tipo de gastos"] = 2;
+          } else {
+            newfinance["tipo de gastos"] = 3;
+          }
         } else {
-          newfinance["tipo de gastos"] = 3;
+          newfinance["receita descrição"] = _decricaoGastosController.text;
+          newfinance["receita valor"] = _valorController.text;
+          final ano = DateTime.now().year;
+          final mes = DateTime.now().month;
+          newfinance["ano"] = ano.toString();
+          newfinance["mes"] = mes.toString();
         }
+        // Navegação: Volta para a HOMEPAGE
+        Navigator.pop(context, newfinance);
       } else {
-        newfinance["receita descrição"] = _decricaoGastosController.text;
-        newfinance["receita valor"] = _valorController.text;
-        final ano = DateTime.now().year;
-        final mes = DateTime.now().month;
-        newfinance["ano"] = ano.toString();
-        newfinance["mes"] = mes.toString();
-      }
-      Navigator.pop(context, newfinance);
+        setState(() {
+          _infoText = "Coloque um valor valido positivo";
+        });
+      }      
     });
   }
 
@@ -74,6 +83,7 @@ class _SelectionPageState extends State<SelectionPage> {
 
   @override
   void initState() {
+    _infoText = "";
     super.initState();
     _dateTime = null;
     dropdownValue = null;
@@ -309,8 +319,9 @@ class _SelectionPageState extends State<SelectionPage> {
                   nameController: _valorController,
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
+                Text(_infoText, style: AppTextStyles.body20,),
                 SizedBox(
                   height: 20,
                 ),

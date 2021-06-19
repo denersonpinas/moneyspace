@@ -74,9 +74,6 @@ class _PercentualWidgetState extends State<PercentualWidget> {
             Container(
               child: Column(
                   children: [
-                    // SizedBox(
-                    //   height: 10,
-                    // ),
                     TextFieldWidget(
                       label: "Gastos Essenciais(%)",
                       nameController: _typeOneController,

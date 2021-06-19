@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:moneyspace/admin/login_page.dart';
 import 'package:moneyspace/core/app_text_styles.dart';
@@ -15,6 +16,8 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
+
+const two_PI = 3.14 * 2;
 
 class _HomePageState extends State<HomePage> {  
 
@@ -151,10 +154,10 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  _setPercent(tipo){
+  double _setPercent(tipo){
     if(_setCount() == 0){
       setState(() {
-        percent = 0.5;
+        percent = 0;
       });        
     } else if(_setCount() > 0) {     
         double calcgastostipo = 0;
@@ -167,9 +170,8 @@ class _HomePageState extends State<HomePage> {
         }
         setState(() {
           result = calcgastostipo / (_setSaldoReceita() * 0.33);   
-          percent = result;                  
-        });        
-        // num.parse(result.toStringAsPrecision(2));               
+          percent = double.parse(result.toStringAsPrecision(2));;                  
+        });               
     } else {
         percent = 0.0;
     }
@@ -185,6 +187,8 @@ class _HomePageState extends State<HomePage> {
       });        
     });    
   }  
+
+  final size = 100.0;
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                         child: Image.asset(AppImages.sifrao, scale: 1.5,)
                       ),
                       accountName: Text('Luís Lima'),
-                      accountEmail: Text('Vamos investir para nosso futuro garantir')),
+                      accountEmail: Text('Vamos investir!')),
                   ListTile(
                     leading: Icon(Icons.home),
                     title: Text('Editar Nome'),
@@ -321,21 +325,24 @@ class _HomePageState extends State<HomePage> {
                           percent: _setPercent(1),
                           varPercent: 50,
                           label: "vermelho",
-                        )),
+                        )
+                      ),
                       Expanded(
                         flex: 2,
                         child: ChartWidget(
                           percent: _setPercent(2),
                           varPercent: 30,
                           label: "amarelo",
-                        )),                        
+                        )
+                      ),                        
                       Expanded(
                         flex: 2,
                         child: ChartWidget(
                           percent: _setPercent(3),
                           varPercent: 20,
                           label: "verde",
-                        )),                        
+                        )
+                      ),                        
                     ],
                   ),
                 )
