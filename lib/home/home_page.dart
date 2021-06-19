@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:moneyspace/admin/login_page.dart';
 import 'package:moneyspace/core/app_text_styles.dart';
 import 'package:moneyspace/home/widget/chart/chart_widget.dart';
+import 'package:moneyspace/home/widget/percentual/percentual_widget.dart';
 import 'package:moneyspace/shared/database/database_page.dart';
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/app_images.dart';
@@ -9,6 +11,7 @@ import 'package:moneyspace/selection/selection_page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -187,14 +190,53 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
             backgroundColor: AppColors.darkGreyBlack,
-            appBar: AppBar(
-              leading: GestureDetector(
-                child: Image.asset(
-                  AppImages.bars,
-                  scale: 1.8,
-                ),
-                onTap: (){},
+            drawer: Drawer(
+              child: Column(
+                children: [
+                  UserAccountsDrawerHeader(
+                      decoration: BoxDecoration(
+                          color: AppColors.darkGreyBlack
+                      ),
+                      currentAccountPicture: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: Image.asset(AppImages.sifrao, scale: 1.5,)
+                      ),
+                      accountName: Text('Luís Lima'),
+                      accountEmail: Text('Vamos investir para nosso futuro garantir')),
+                  ListTile(
+                    leading: Icon(Icons.home),
+                    title: Text('Editar Nome'),
+                    subtitle: Text('Edite seu nome ou apelido'),
+                    onTap: (){
+                      Navigator.pushReplacement(
+                          context, MaterialPageRoute(builder: (context) => LoginPage())
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.attach_money),
+                    title: Text('Editar Metas'),
+                    subtitle: Text('Definir % das metas'),
+                    onTap: (){
+                      Navigator.pushReplacement(
+                          context, MaterialPageRoute(builder: (context) => PercentualWidget())
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.logout),
+                    title: Text('Sair'),
+                    subtitle: Text('Finalizar sessão'),
+                    onTap: (){
+                      // Navigator.pushReplacement(
+                      //     context, MaterialPageRoute(builder: (context) => PercentualWidget())
+                      // );
+                    },
+                  ),
+                ],
               ),
+            ),
+            appBar: AppBar(
               title: GestureDetector(
                 child: Text(
                   setData()
@@ -239,7 +281,7 @@ class _HomePageState extends State<HomePage> {
                     },
                     tooltip: 'Adicionar',
                     child: Icon(Icons.add),
-                    backgroundColor: AppColors.darkGreen,
+                    backgroundColor: AppColors.green,
                   ),
                 ),
                 Expanded(
@@ -276,17 +318,23 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         flex: 2,
                         child: ChartWidget(
-                          percent: _setPercent(1), label: 'vermelho',
+                          percent: _setPercent(1),
+                          varPercent: 50,
+                          label: "vermelho",
+                        )),
+                      Expanded(
+                        flex: 2,
+                        child: ChartWidget(
+                          percent: _setPercent(2),
+                          varPercent: 30,
+                          label: "amarelo",
                         )),                        
                       Expanded(
                         flex: 2,
                         child: ChartWidget(
-                          percent: _setPercent(2), label: 'amarelo',
-                        )),                        
-                      Expanded(
-                        flex: 2,
-                        child: ChartWidget(
-                          percent: _setPercent(3), label: 'verde',
+                          percent: _setPercent(3),
+                          varPercent: 20,
+                          label: "verde",
                         )),                        
                     ],
                   ),

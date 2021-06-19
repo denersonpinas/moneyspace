@@ -10,7 +10,7 @@ class TextFieldWidget extends StatefulWidget {
     Key? key, 
     required  this.label,
     required this.nameController, 
-  }) : assert(["Nome ou Apelido", "10000.00", "Descrição",].contains(label)), super(key: key);
+  }) : assert(["Nome ou Apelido", "10000.00", "Descrição", "Gastos Essenciais(%)", "Gastos Não Essenciais(%)", "Investimentos(%)"].contains(label)), super(key: key);
 
   final config = {
     "Nome ou Apelido" : {
@@ -24,6 +24,18 @@ class TextFieldWidget extends StatefulWidget {
     "Descrição" : {
       "icon" : Icons.comment,
       "inputType": TextInputType.text
+    },
+    "Gastos Essenciais(%)" : {
+      "icon" : Icons.account_balance_wallet_sharp,
+      "inputType": TextInputType.number
+    },
+    "Gastos Não Essenciais(%)" : {
+      "icon" : Icons.local_airport_outlined,
+      "inputType": TextInputType.number
+    },
+    "Investimentos(%)" : {
+      "icon" : Icons.attach_money,
+      "inputType": TextInputType.number
     },
   };
 
