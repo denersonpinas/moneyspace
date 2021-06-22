@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:brasil_fields/brasil_fields.dart';
+import 'package:flutter/services.dart';
 import 'package:moneyspace/admin/login_page.dart';
 import 'package:moneyspace/core/app_text_styles.dart';
 import 'package:moneyspace/home/widget/chart/chart_widget.dart';
@@ -329,6 +330,8 @@ class _HomeState extends State<Home> {
               title: Text('Sair'),
               subtitle: Text('Finalizar sessão'),
               onTap: () {
+                SystemNavigator.pop();
+
                 // Navigator.pushReplacement(
                 //     context, MaterialPageRoute(builder: (context) => PercentualWidget())
                 // );
