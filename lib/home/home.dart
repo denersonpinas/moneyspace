@@ -4,22 +4,22 @@ import 'dart:core';
 import 'package:moneyspace/admin/login_page.dart';
 import 'package:moneyspace/core/app_text_styles.dart';
 import 'package:moneyspace/home/widget/chart/chart_widget.dart';
-import 'package:moneyspace/home/widget/percentual/percentual_widget.dart';
+import 'package:moneyspace/metas/percentual_widget.dart';
 import 'package:moneyspace/shared/database/database_page.dart';
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/app_images.dart';
 import 'package:moneyspace/selection/selection_page.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+class Home extends StatefulWidget {
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomeState createState() => _HomeState();
 }
 
 const two_PI = 3.14 * 2;
 
-class _HomePageState extends State<HomePage> {  
+class _HomeState extends State<Home> {  
 
   String _iforText = "";
   late double percent;
@@ -28,12 +28,15 @@ class _HomePageState extends State<HomePage> {
   dynamic ano;
   dynamic mes;
   dynamic l;
-  int i = 0;
+  // int i = 0;
   List _mes = [{1:"Janeiro", 2:"Fevereiro", 3:"Março", 4:"Abril", 5:"Maio", 6:"Junho", 7:"Julho", 8:"Agosto", 9:"Setembro", 10:"Outubro", 11:"Novembro", 12:"Dezembro",}];
-  List _listfinance = [
-    {
-      "carteira": []
-    }    
+  List _listfinance = [{"carteira": []}];
+  List _listname = [{"user":"user"}];
+  List _listmetas = [{
+      "gastos essenciais" : 0.6,
+      "gastos não essenciais" : 0.3,
+      "investimentos" : 0.1
+    }
   ];
   late Map<String, dynamic> _lastRemoved;
   late int _lastRemovedPos;  
@@ -138,7 +141,7 @@ class _HomePageState extends State<HomePage> {
         _listfinance[0]["carteira"].add({recContact["ano"]:[{recContact["mes"]:[]}]});
         _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]].add(recContact);  
       }
-      saveData(_listfinance);
+      saveData(_listfinance[0]["carteira"], "test20");
     });
   }
 
@@ -169,8 +172,15 @@ class _HomePageState extends State<HomePage> {
           }     
         }
         setState(() {
-          result = calcgastostipo / (_setSaldoReceita() * 0.33);   
-          percent = double.parse(result.toStringAsPrecision(2));;                  
+          print(_listmetas[0]["gastos essenciais"]);
+          if(tipo == 1){            
+            result = calcgastostipo / (_setSaldoReceita() * _listmetas[0]["gastos essenciais"]);
+          } else if(tipo == 2) {
+            result = calcgastostipo / (_setSaldoReceita() * _listmetas[0]["gastos não essenciais"]);
+          } else {
+            result = calcgastostipo / (_setSaldoReceita() * _listmetas[0]["investimentos"]);
+          }             
+          percent = double.parse(result.toStringAsPrecision(2));                  
         });               
     } else {
         percent = 0.0;
@@ -181,14 +191,26 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    readData().then((dynamic data){ 
+    readData("test20").then((dynamic data){ 
       setState(() {                    
         _listfinance[0]["carteira"] = json.decode(data);
+      });        
+    }); 
+    readData("admin").then((dynamic data){ 
+      setState(() {                    
+        _listname[0]["user"] = json.decode(data);
+      });        
+    });
+    readData("metas").then((dynamic data){ 
+      setState(() {                    
+        _listmetas[0] = json.decode(data);
+        print("Aqui");
+        print(_listmetas);
       });        
     });    
   }  
 
-  final size = 100.0;
+  // final size = 100.0;
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +227,7 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(40),
                         child: Image.asset(AppImages.sifrao, scale: 1.5,)
                       ),
-                      accountName: Text('Luís Lima'),
+                      accountName: Text(_listname[0]["user"]),
                       accountEmail: Text('Vamos investir!')),
                   ListTile(
                     leading: Icon(Icons.home),
@@ -323,7 +345,7 @@ class _HomePageState extends State<HomePage> {
                         flex: 2,
                         child: ChartWidget(
                           percent: _setPercent(1),
-                          varPercent: 50,
+                          varPercent: (_listmetas[0]["gastos essenciais"] * 100).ceil(),
                           label: "vermelho",
                         )
                       ),
@@ -331,7 +353,7 @@ class _HomePageState extends State<HomePage> {
                         flex: 2,
                         child: ChartWidget(
                           percent: _setPercent(2),
-                          varPercent: 30,
+                          varPercent:(_listmetas[0]["gastos não essenciais"] * 100).ceil(),
                           label: "amarelo",
                         )
                       ),                        
@@ -339,7 +361,7 @@ class _HomePageState extends State<HomePage> {
                         flex: 2,
                         child: ChartWidget(
                           percent: _setPercent(3),
-                          varPercent: 20,
+                          varPercent: (_listmetas[0]["investimentos"] * 100).ceil(),
                           label: "verde",
                         )
                       ),                        
@@ -425,7 +447,7 @@ class _HomePageState extends State<HomePage> {
           _lastRemovedPos = index;
           _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].removeAt(index);
 
-          saveData(_listfinance);
+          saveData(_listfinance[0]["carteira"], "test20");
 
           final snack = SnackBar(
             content: Text("Aplicação removida!"),
@@ -434,7 +456,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: (){
                 setState(() {
                   _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].insert(_lastRemovedPos, _lastRemoved);
-                  saveData(_listfinance);
+                  saveData(_listfinance[0]["carteira"], "test20");
                 });                
               },
             ),

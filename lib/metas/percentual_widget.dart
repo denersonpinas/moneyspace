@@ -1,5 +1,7 @@
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/app_text_styles.dart';
+import 'package:moneyspace/home/home.dart';
+import 'package:moneyspace/shared/database/database_page.dart';
 import 'package:moneyspace/shared/widgets/comfirmed_button/confirmed_button_widget.dart';
 import 'package:moneyspace/shared/widgets/text_field/text_field_widget.dart';
 import 'package:flutter/material.dart';
@@ -11,48 +13,27 @@ class PercentualWidget extends StatefulWidget {
 }
 
 class _PercentualWidgetState extends State<PercentualWidget> {
+
   final _typeOneController = TextEditingController();
-
   final _typeTwoController = TextEditingController();
-
   final _typeThreeController = TextEditingController();
 
-  List _listpercentual = [];
-  late String _inforText;
-
-  _addTopercent() {
-    Map<String, dynamic> newpercentual = Map();
-
-    newpercentual["gastos essenciais"] = _typeOneController.text;
-    newpercentual["gastos não essenciais"] = _typeTwoController.text;
-    newpercentual["investimentos"] = _typeThreeController.text;
-
-    _listpercentual.add(newpercentual);
-    print(_listpercentual);
-    // Navigator.pop(context, newfinance);
-  }
-
-  _virifPercent(){
-    final soma = int.parse(_typeOneController.text) + int.parse(_typeTwoController.text) + int.parse(_typeThreeController.text);
-    print("Essa é a soma $soma");      
-    if(soma == 100){
-      if(int.parse(_typeOneController.text) > 0 && int.parse(_typeTwoController.text) > 0 && int.parse(_typeThreeController.text) > 0){
-        _addTopercent();
-      } else {
-        setState(() {
-          _inforText = "Não é permitido valor negativo";
-        });  
-      }        
-    } else {
-      setState(() {
-        _inforText = "Soma de todas as porcentagens tem que ser 100";
-      });        
+  List _listmetas = [
+    {
+      "gastos essenciais" : 0.6,
+      "gastos não essenciais" : 0.3,
+      "investimentos" : 0.1
     }
-  }
+  ];
+  late String _inforText;
 
   @override
   void initState() {
     _inforText = "";
+
+    _typeOneController.text = "60";
+    _typeTwoController.text =  "30";
+    _typeThreeController.text = "10";
     super.initState();       
   }
 
@@ -102,7 +83,36 @@ class _PercentualWidgetState extends State<PercentualWidget> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Expanded(child: ConfirmedButtonWidget.green(label: "Alterar", onTap: _virifPercent)),
+                        Expanded(
+                          child: ConfirmedButtonWidget.green(
+                            label: "Alterar", 
+                            onTap: (){
+                              final soma = int.parse(_typeOneController.text) + int.parse(_typeTwoController.text) + int.parse(_typeThreeController.text);    
+                              if(soma == 100){
+                                if(int.parse(_typeOneController.text) > 0 && int.parse(_typeTwoController.text) > 0 && int.parse(_typeThreeController.text) > 0){
+                                  _listmetas[0]["gastos essenciais"] = (double.parse(_typeOneController.text) / 100);
+                                  _listmetas[0]["gastos não essenciais"] = (double.parse(_typeTwoController.text) / 100);
+                                  _listmetas[0]["investimentos"] = (double.parse(_typeThreeController.text) / 100); 
+                                  _inforText = "";
+                                  saveData(_listmetas[0], "metas");
+
+                                  Navigator.push(
+                                    context, MaterialPageRoute(
+                                      builder: (context) => Home()
+                                  ));
+                                } else {
+                                  setState(() {
+                                    _inforText = "Não é permitido valor menor ou igual a 0";
+                                  });  
+                                }        
+                              } else {
+                                setState(() {
+                                  _inforText = "Soma de todas as porcentagens tem que ser 100";
+                                });        
+                              }                              
+                            }
+                          )
+                        ),
                       ],
                     ),
                   ]
@@ -113,4 +123,9 @@ class _PercentualWidgetState extends State<PercentualWidget> {
       ),
     );
   }
+
+  HomePage buildHomePage() => HomePage();
+}
+
+class HomePage {
 }
