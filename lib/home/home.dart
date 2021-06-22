@@ -134,6 +134,7 @@ class _HomeState extends State<Home> {
   }
 
   _addList(recContact) {
+    print(recContact);
     setState(() {
       if (_listfinance[0]["carteira"].length == 0) {
         _listfinance[0]["carteira"].add({
@@ -149,7 +150,7 @@ class _HomeState extends State<Home> {
             });
           } else {
             double percent = _setSaldoReceita() * 0.33;
-            if (percent < num.parse(recContact["gastos valor"])) {
+            if (percent < UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"])) {
               setState(() {
                 _iforText = "Aumente sua receita, sinal lotado!";
               });
@@ -178,7 +179,7 @@ class _HomeState extends State<Home> {
           });
         } else {
           double percent = _setSaldoReceita() * 0.33;
-          if (percent < num.parse(recContact["gastos valor"])) {
+          if (percent < UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"])) {
             setState(() {
               _iforText = "Aumente sua receita, sinal lotado!";
             });
@@ -243,9 +244,6 @@ class _HomeState extends State<Home> {
         }
       }
       setState(() {
-        result = calcgastostipo / (_setSaldoReceita() * 0.33);
-        percent = double.parse(result.toStringAsPrecision(2));
-
         print(_listmetas[0]["gastos essenciais"]);
         if (tipo == 1) {
           result = calcgastostipo /
@@ -368,7 +366,7 @@ class _HomeState extends State<Home> {
             child: Text("SALDO", style: AppTextStyles.titleSaldo),
           ),
           Text(
-            "R\$ " + _setSaldo(),
+            "R\$ " + _setSaldo().replaceAll('.', ','),
             style: AppTextStyles.valueSaldo,
           ),
           Center(

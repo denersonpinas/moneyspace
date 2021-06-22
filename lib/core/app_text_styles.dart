@@ -91,7 +91,7 @@ class AppTextStyles {
   );
   static final TextStyle valueSaldo = GoogleFonts.notoSans(
     color: AppColors.white,
-    fontSize: 60,
+    fontSize: 50,
     fontWeight: FontWeight.w800,
   );
   static final TextStyle titleSaldo = GoogleFonts.notoSans(
