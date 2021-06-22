@@ -27,7 +27,7 @@ class _SelectionPageState extends State<SelectionPage> {
       if(UtilBrasilFields.converterMoedaParaDouble(_valorController.text) > 0){
         if(iconRed == true){      
           newfinance["gastos descrição"] = _decricaoGastosController.text;
-          newfinance["gastos valor"] = UtilBrasilFields.converterMoedaParaDouble(_valorController.text);
+          newfinance["gastos valor"] = _valorController.text;
           final ano = DateTime.now().year;
           final mes = DateTime.now().month;
           newfinance["ano"] = ano.toString();
@@ -41,7 +41,7 @@ class _SelectionPageState extends State<SelectionPage> {
           }
         } else {
           newfinance["receita descrição"] = _decricaoGastosController.text;
-          newfinance["receita valor"] = UtilBrasilFields.converterMoedaParaDouble(_valorController.text);
+          newfinance["receita valor"] = _valorController.text;
           final ano = DateTime.now().year;
           final mes = DateTime.now().month;
           newfinance["ano"] = ano.toString();

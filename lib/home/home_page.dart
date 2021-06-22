@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:moneyspace/admin/login_page.dart';
 import 'package:moneyspace/core/app_text_styles.dart';
 import 'package:moneyspace/home/widget/chart/chart_widget.dart';
@@ -63,7 +64,7 @@ class _HomePageState extends State<HomePage> {
         double calcgastos = 0;
         for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
           if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null){
-            calcgastos = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastos;
+            calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastos;
           }    
         }       
         return calcgastos;
@@ -79,7 +80,7 @@ class _HomePageState extends State<HomePage> {
         double calcsaldoReceita = 0;  
         for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
           if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null){
-            calcsaldoReceita = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldoReceita;
+            calcsaldoReceita = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldoReceita;
           }     
         }
         return calcsaldoReceita;
@@ -165,12 +166,12 @@ class _HomePageState extends State<HomePage> {
         
         for(l = 0; l<_listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++){
           if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null && _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["tipo de gastos"] == tipo){
-            calcgastostipo = int.parse(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastostipo;
+            calcgastostipo = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastostipo;
           }     
         }
         setState(() {
           result = calcgastostipo / (_setSaldoReceita() * 0.33);   
-          percent = double.parse(result.toStringAsPrecision(2));;                  
+          percent = double.parse(result.toStringAsPrecision(2));;
         });               
     } else {
         percent = 0.0;
