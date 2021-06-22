@@ -1,3 +1,5 @@
+// import 'package:brasil_fields/brasil_fields.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/services.dart';
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -10,16 +12,20 @@ class TextFieldWidget extends StatefulWidget {
     Key? key, 
     required  this.label,
     required this.nameController, 
-  }) : assert(["Nome ou Apelido", "10000.00", "Descrição", "Gastos Essenciais(%)", "Gastos Não Essenciais(%)", "Investimentos(%)"].contains(label)), super(key: key);
+  }) : assert(["Nome ou Apelido", "10000,00", "Descrição", "Gastos Essenciais(%)", "Gastos Não Essenciais(%)", "Investimentos(%)"].contains(label)), super(key: key);
 
   final config = {
     "Nome ou Apelido" : {
       "icon" : Icons.supervised_user_circle,
       "inputType": TextInputType.text
     },
-    "10000.00" : {
+    "10000,00" : {
       "icon" : Icons.attach_money,
-      "inputType": TextInputType.numberWithOptions(decimal: true)
+      "inputType": TextInputType.numberWithOptions(decimal: true),
+      "inputFormatters": [
+        FilteringTextInputFormatter.digitsOnly,
+        RealInputFormatter(centavos: true)
+      ],
     },
     "Descrição" : {
       "icon" : Icons.comment,

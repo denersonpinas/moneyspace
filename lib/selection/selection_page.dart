@@ -1,4 +1,6 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/core.dart';
@@ -22,10 +24,10 @@ class _SelectionPageState extends State<SelectionPage> {
   void _addTodo() {
     setState(() {
       Map<String, dynamic> newfinance = Map();
-      if(double.parse(_valorController.text) > 0){
+      if(UtilBrasilFields.converterMoedaParaDouble(_valorController.text) > 0){
         if(iconRed == true){      
           newfinance["gastos descrição"] = _decricaoGastosController.text;
-          newfinance["gastos valor"] = _valorController.text;
+          newfinance["gastos valor"] = UtilBrasilFields.converterMoedaParaDouble(_valorController.text);
           final ano = DateTime.now().year;
           final mes = DateTime.now().month;
           newfinance["ano"] = ano.toString();
@@ -39,7 +41,7 @@ class _SelectionPageState extends State<SelectionPage> {
           }
         } else {
           newfinance["receita descrição"] = _decricaoGastosController.text;
-          newfinance["receita valor"] = _valorController.text;
+          newfinance["receita valor"] = UtilBrasilFields.converterMoedaParaDouble(_valorController.text);
           final ano = DateTime.now().year;
           final mes = DateTime.now().month;
           newfinance["ano"] = ano.toString();
@@ -234,104 +236,144 @@ class _SelectionPageState extends State<SelectionPage> {
       backgroundColor: AppColors.darkGreyBlack,
       body: Form(
         key: _formKey,
-        child: Container(
-          child: Padding(
-            padding: EdgeInsets.only(left: 31, right: 31, top: 100),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 50),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [                    
-                    Column(
-                      children: [
-                        GestureDetector(
-                          child: Image.asset(
-                            setIconRed(),
-                            scale: 1.5
-                          ),
-                          // Image: setIconRed(), 
-                          onTap: () {
-                            setState(() {
-                              iconRed = true;
-                              iconGreen = false;
-                            });                    
-                          }
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "Despesa",
-                          style: AppTextStyles.heading15,
-                          textAlign: TextAlign.center,
-                        )
-                      ],
-                    ),
-                    Text(
-                        "OU",
-                        style: AppTextStyles.heading40                                        
-                    ),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          child:
-                            Image.asset(
-                              setIconGreen(),
+        child: SingleChildScrollView(
+          child: Container(
+            child: Padding(
+              padding: EdgeInsets.only(left: 31, right: 31, top: 100),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [                    
+                      Column(
+                        children: [
+                          GestureDetector(
+                            child: Image.asset(
+                              setIconRed(),
                               scale: 1.5
-                            ), 
+                            ),
+                            // Image: setIconRed(), 
                             onTap: () {
                               setState(() {
-                                iconGreen = true;
-                                iconRed = false;
+                                iconRed = true;
+                                iconGreen = false;
                               });                    
                             }
-                        ),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          "Receita",
-                          style: AppTextStyles.heading15,
-                          textAlign: TextAlign.center,
-                        )
-                      ],
-                    )
-                  ]),
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                setFarol(),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFieldWidget(
-                  label: "Descrição",
-                  nameController: _decricaoGastosController,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                TextFieldWidget(
-                  label: "10000.00",
-                  nameController: _valorController,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(_infoText, style: AppTextStyles.body20,),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(child: ConfirmedButtonWidget.green(label: "Adicionar", onTap: _valid)),
-                  ],
-                ),
-              ]
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            "Despesa",
+                            style: AppTextStyles.heading15,
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ),
+                      Text(
+                          "OU",
+                          style: AppTextStyles.heading40                                        
+                      ),
+                      Column(
+                        children: [
+                          GestureDetector(
+                            child:
+                              Image.asset(
+                                setIconGreen(),
+                                scale: 1.5
+                              ), 
+                              onTap: () {
+                                setState(() {
+                                  iconGreen = true;
+                                  iconRed = false;
+                                });                    
+                              }
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            "Receita",
+                            style: AppTextStyles.heading15,
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      )
+                    ]),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  setFarol(),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFieldWidget(
+                    label: "Descrição",
+                    nameController: _decricaoGastosController,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  TextFormField(
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      RealInputFormatter(centavos: true, moeda: true)
+                    ],
+                    controller: _valorController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: AppColors.greyBlack,
+                      hintText: "10000,00",
+                      hintStyle: TextStyle(color: AppColors.lightGrey),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: new BorderSide(color: AppColors.greyBlack),
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: new BorderSide(color: AppColors.greyBlack),
+                        borderRadius: new BorderRadius.circular(10),
+                      ),
+                      prefixIcon: Icon(
+                        Icons.attach_money,
+                        color: AppColors.green,
+                      ),
+                    ),
+                    style: TextStyle(
+                      color: AppColors.lightGreen,
+                      fontSize: 18,
+                    ),
+                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    validator: (value){
+                      if(value!.isEmpty){
+                        return"Este campo é obrigatório!";
+                      }
+                      print(_valorController);
+                    },
+                  ),
+
+                  // TextFieldWidget(
+                  //   label: "10000,00",
+                  //   nameController: _valorController,
+                  // ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text(_infoText, style: AppTextStyles.body20,),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(child: ConfirmedButtonWidget.green(label: "Adicionar", onTap: _valid)),
+                    ],
+                  ),
+                ]
+              ),
             ),
           ),
         ),
