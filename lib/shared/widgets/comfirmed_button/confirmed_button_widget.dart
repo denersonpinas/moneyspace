@@ -56,14 +56,14 @@ class ConfirmedButtonWidget extends StatelessWidget {
             BorderSide(color: boderColor)
           ),
         ),
-        onPressed: onTap, 
+        onPressed: onTap,
         child: Text(label,
-        style: GoogleFonts.notoSans(
-          fontWeight: FontWeight.w600,
-          fontSize: 15,
-          color: fontColor,
+          style: GoogleFonts.notoSans(
+            fontWeight: FontWeight.w600,
+            fontSize: 15,
+            color: fontColor,
+          ),
         ),
-        )
       ),
     );
   }
