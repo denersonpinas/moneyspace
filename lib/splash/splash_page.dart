@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:moneyspace/admin/login_page.dart';
 import 'package:moneyspace/core/app_gradients.dart';
 import 'package:moneyspace/core/app_images.dart';
-import 'package:moneyspace/home/home_page.dart';
 
 class SplashPage extends StatelessWidget {
 
@@ -10,7 +10,7 @@ class SplashPage extends StatelessWidget {
     Future.delayed(Duration(
       seconds:  2
     )).then((_)=> Navigator.pushReplacement(
-      context, MaterialPageRoute(builder: (context) => HomePage())
+      context, MaterialPageRoute(builder: (context) => LoginPage())
     ));
     
     return Scaffold(
