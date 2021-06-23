@@ -3,6 +3,7 @@ import 'dart:core';
 
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
 import 'package:moneyspace/admin/login_page.dart';
 import 'package:moneyspace/core/app_text_styles.dart';
 import 'package:moneyspace/home/widget/chart/chart_widget.dart';
@@ -113,7 +114,8 @@ class _HomeState extends State<Home> {
   }
 
   _addList(recContact) {
-    setState(() {      
+    print(recContact);
+    setState(() {
       if (_listfinance[0]["carteira"].length == 0) {
         _listfinance[0]["carteira"].add({"$ano": [{"$mes": []}]});
 
@@ -129,9 +131,7 @@ class _HomeState extends State<Home> {
           } else {
 
             double percent = _setSaldoReceita() * 0.33;
-
             if (percent < UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"])) {
-
               setState(() {
                 _iforText = "Aumente sua receita, sinal lotado!";
               });
@@ -211,8 +211,10 @@ class _HomeState extends State<Home> {
         }
       }
       setState(() {
-        if (tipo == 1) {          
-          result = calcgastostipo / (_setSaldoReceita() * _listmetas[0]["gastos essenciais"]);
+        print(_listmetas[0]["gastos essenciais"]);
+        if (tipo == 1) {
+          result = calcgastostipo /
+              (_setSaldoReceita() * _listmetas[0]["gastos essenciais"]);
         } else if (tipo == 2) {
           result = calcgastostipo / (_setSaldoReceita() * _listmetas[0]["gastos não essenciais"]);
         } else {
@@ -288,6 +290,8 @@ class _HomeState extends State<Home> {
               title: Text('Sair'),
               subtitle: Text('Finalizar sessão'),
               onTap: () {
+                SystemNavigator.pop();
+
                 // Navigator.pushReplacement(
                 //     context, MaterialPageRoute(builder: (context) => PercentualWidget())
                 // );
@@ -325,7 +329,7 @@ class _HomeState extends State<Home> {
             child: Text("SALDO", style: AppTextStyles.titleSaldo),
           ),
           Text(
-            "R\$ " + _setSaldo(),
+            "R\$ " + _setSaldo().replaceAll('.', ','),
             style: AppTextStyles.valueSaldo,
           ),
           Center(
