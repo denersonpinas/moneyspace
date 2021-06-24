@@ -67,8 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: ConfirmedButtonWidget.green(
                     label: "Inserir", 
                     onTap: (){
-                      _listname[0]["user"] = _nameController.text;
-                      print(_listname);
+                      _listname[0]["user"] = _nameController.text != "" ? _nameController.text : "user";
                       saveData(_listname[0]["user"], "admin");
                       Navigator.pushReplacement(
                         context, MaterialPageRoute(builder: (context) => Home())
