@@ -34,87 +34,92 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    if(_listname != null && _listname[0]["contador"] == 1){      
-      return Scaffold(
-        backgroundColor: AppColors.darkGreyBlack,
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 34),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        "Digite seu usuario!",
-                        style:
-                        AppTextStyles.title,
-                      )
-                    ),
-                  ]
-                )
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                child: Column(
+    if(_listname[0] != null){
+      print("entrei");    
+      print("entrei ${_listname}");  
+      if(_listname[0]["contador"] == 1) {        
+        return Scaffold(
+          backgroundColor: AppColors.darkGreyBlack,
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 34),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          "Digite seu usuario!",
+                          style:
+                          AppTextStyles.title,
+                        )
+                      ),
+                    ]
+                  )
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Column(
+                    children: [
+                      TextFieldWidget(
+                        label: "Nome ou Apelido",
+                        nameController: _nameController,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    TextFieldWidget(
-                      label: "Nome ou Apelido",
-                      nameController: _nameController,
+                    Expanded(
+                      child: ConfirmedButtonWidget.green(
+                        label: "Inserir", 
+                        onTap: (){
+                          _listname[0]["user"] = _nameController.text != "" ? _nameController.text : "user";
+                          if(_listname[0]["contador"] == 1 || _listname[0]["contador"] < 2){
+                            _listname[0]["contador"] = _listname[0]["contador"] + 1; 
+                          }                      
+                          saveData(_listname, "admin");
+                          Navigator.pushReplacement(
+                            context, MaterialPageRoute(builder: (context) => Home())
+                          );
+                        }
+                      )
                     ),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    child: ConfirmedButtonWidget.green(
-                      label: "Inserir", 
-                      onTap: (){
-                        _listname[0]["user"] = _nameController.text != "" ? _nameController.text : "user";
-                        if(_listname[0]["contador"] == 1 || _listname[0]["contador"] < 2){
-                          _listname[0]["contador"] = _listname[0]["contador"] + 1; 
-                        }                      
-                        saveData(_listname, "admin");
-                        Navigator.pushReplacement(
-                          context, MaterialPageRoute(builder: (context) => Home())
-                        );
-                      }
-                    )
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      );
-    } else if(_listname != null && _listname[0]["contador"] > 1) {
-      Future.delayed(Duration(
+        );
+      } else {
+        print("entrei else");
+        Future.delayed(Duration(
           seconds:  0
-      )).then((_)=> Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Home())
-      ));
+        )).then((_)=> Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Home())
+        ));
 
-      return Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: AppGradients.linear,
+        return Scaffold(
+          body: Container(
+            decoration: BoxDecoration(
+              gradient: AppGradients.linear,
+            ),
+            child: Center(
+              child: Image.asset(AppImages.logo)        
+            ),
           ),
-          child: Center(
-            child: Image.asset(AppImages.logo)        
-          ),
-        ),
-      );
-
+        );
+      }      
     } else {
+      print("entrei else 2");
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -125,7 +130,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       );
-    }
-    
+    }  
   }
 }
