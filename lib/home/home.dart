@@ -27,6 +27,7 @@ class _HomeState extends State<Home> {
   dynamic ano;
   dynamic mes;
   dynamic l;
+
   // int i = 0;
   List _mes = [
     {
@@ -86,9 +87,15 @@ class _HomeState extends State<Home> {
       return 0.0;
     } else if (_setCount() > 0) {
       double calcgastos = 0;
-      for (l = 0; l < _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length; l++) {
-        if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null) {
-          calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastos;
+      for (l = 0; l <
+          _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length; l++) {
+        if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] !=
+            null) {
+          calcgastos = UtilBrasilFields.converterMoedaParaDouble(
+              _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] !=
+                  null
+                  ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"]
+                  : "0") + calcgastos;
         }
       }
       return calcgastos;
@@ -102,9 +109,15 @@ class _HomeState extends State<Home> {
       return 0.00;
     } else if (_setCount() > 0) {
       double calcsaldoReceita = 0;
-      for (l = 0; l < _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++) {
-        if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null) {
-          calcsaldoReceita = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldoReceita;
+      for (l = 0; l <
+          _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length; l++) {
+        if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] !=
+            null) {
+          calcsaldoReceita = UtilBrasilFields.converterMoedaParaDouble(
+              _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] !=
+                  null
+                  ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"]
+                  : "0") + calcsaldoReceita;
         }
       }
       return calcsaldoReceita;
@@ -120,37 +133,31 @@ class _HomeState extends State<Home> {
         _listfinance[0]["carteira"].add({"$ano": [{"$mes": []}]});
 
         if ("$ano" == recContact["ano"]) {
-
-          if (recContact["receita valor"] != null) { 
-
-            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);            
+          if (recContact["receita valor"] != null) {
+            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
             setState(() {
               _iforText = "";
             });
-
           } else {
-
             double percent = _setSaldoReceita() * 0.33;
-            if (percent < UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"])) {
+            if (percent < UtilBrasilFields.converterMoedaParaDouble(
+                recContact["gastos valor"])) {
               setState(() {
                 _iforText = "Aumente sua receita, sinal lotado!";
               });
-
             } else {
-
               _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
 
               setState(() {
                 _iforText = "";
               });
-
             }
           }
         } else {
-
-          _listfinance[0]["carteira"].add({recContact["ano"]: [{recContact["mes"]: []}]});
-          _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]].add(recContact);
-
+          _listfinance[0]["carteira"].add(
+              {recContact["ano"]: [{recContact["mes"]: []}]});
+          _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]]
+              .add(recContact);
         }
       } else if ("$ano" == recContact["ano"]) {
         if (recContact["receita valor"] != null) {
@@ -160,7 +167,8 @@ class _HomeState extends State<Home> {
           });
         } else {
           double percent = _setSaldoReceita() * 0.33;
-          if (percent < UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"])) {
+          if (percent < UtilBrasilFields.converterMoedaParaDouble(
+              recContact["gastos valor"])) {
             setState(() {
               _iforText = "Aumente sua receita, sinal lotado!";
             });
@@ -186,8 +194,12 @@ class _HomeState extends State<Home> {
 
   setData() {
     if (_dateTime == "") {
-      ano = DateTime.now().year;
-      final mesN = DateTime.now().month;
+      ano = DateTime
+          .now()
+          .year;
+      final mesN = DateTime
+          .now()
+          .month;
       mes = _mes[0][mesN];
       _dateTime = "$mes / $ano";
       return _dateTime;
@@ -205,9 +217,17 @@ class _HomeState extends State<Home> {
       double calcgastostipo = 0;
       double result = 0;
 
-      for (l = 0; l < _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++) {
-        if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null && _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["tipo de gastos"] == tipo) {
-          calcgastostipo = UtilBrasilFields.converterMoedaParaDouble( _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"]: "0") + calcgastostipo;
+      for (l = 0; l <
+          _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length; l++) {
+        if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] !=
+            null &&
+            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["tipo de gastos"] ==
+                tipo) {
+          calcgastostipo = UtilBrasilFields.converterMoedaParaDouble(
+              _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] !=
+                  null
+                  ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"]
+                  : "0") + calcgastostipo;
         }
       }
       setState(() {
@@ -216,9 +236,11 @@ class _HomeState extends State<Home> {
           result = calcgastostipo /
               (_setSaldoReceita() * _listmetas[0]["gastos essenciais"]);
         } else if (tipo == 2) {
-          result = calcgastostipo / (_setSaldoReceita() * _listmetas[0]["gastos não essenciais"]);
+          result = calcgastostipo /
+              (_setSaldoReceita() * _listmetas[0]["gastos não essenciais"]);
         } else {
-          result = calcgastostipo / (_setSaldoReceita() * _listmetas[0]["investimentos"]);
+          result = calcgastostipo /
+              (_setSaldoReceita() * _listmetas[0]["investimentos"]);
         }
         percent = double.parse(result.toStringAsPrecision(2));
       });
@@ -305,19 +327,20 @@ class _HomeState extends State<Home> {
           child: Text(setData()),
           onTap: () {
             showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2020),
-                    lastDate: DateTime(2222),
-                    locale: Locale("pt", "BR"))
-                .then((date) => {
-                      setState(() {
-                        ano = date?.year;
-                        final mesN = date?.month;
-                        mes = _mes[0][mesN];
-                        _dateTime = "$mes / $ano";
-                      })
-                    });
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2020),
+                lastDate: DateTime(2222),
+                locale: Locale("pt", "BR"))
+                .then((date) =>
+            {
+              setState(() {
+                ano = date?.year;
+                final mesN = date?.month;
+                mes = _mes[0][mesN];
+                _dateTime = "$mes / $ano";
+              })
+            });
           },
         ),
         backgroundColor: AppColors.green,
@@ -378,7 +401,7 @@ class _HomeState extends State<Home> {
                     child: ChartWidget(
                       percent: _setPercent(1),
                       varPercent:
-                          (_listmetas[0]["gastos essenciais"] * 100).ceil(),
+                      (_listmetas[0]["gastos essenciais"] * 100).ceil(),
                       label: "vermelho",
                     )),
                 Expanded(
@@ -386,7 +409,7 @@ class _HomeState extends State<Home> {
                     child: ChartWidget(
                       percent: _setPercent(2),
                       varPercent:
-                          (_listmetas[0]["gastos não essenciais"] * 100).ceil(),
+                      (_listmetas[0]["gastos não essenciais"] * 100).ceil(),
                       label: "amarelo",
                     )),
                 Expanded(
@@ -406,7 +429,10 @@ class _HomeState extends State<Home> {
 
   Widget _gastosCard(BuildContext context, int index) {
     return Dismissible(
-      key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
+      key: Key(DateTime
+          .now()
+          .millisecondsSinceEpoch
+          .toString()),
       background: Container(
         color: AppColors.red,
         child: Align(
@@ -424,69 +450,69 @@ class _HomeState extends State<Home> {
                   children: [
                     Container(
                         child: Row(children: [
-                      selectImage(index),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
-                                          [index]["gastos descrição"] !=
+                          selectImage(index),
+                          Padding(
+                            padding: EdgeInsets.only(left: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
+                                  [index]["gastos descrição"] !=
                                       null
-                                  ? _listfinance[0]["carteira"][0]["$ano"][0]
-                                          ["$mes"][index]["gastos descrição"]
+                                      ? _listfinance[0]["carteira"][0]["$ano"][0]
+                                  ["$mes"][index]["gastos descrição"]
                                       .toString()
-                                  : _listfinance[0]["carteira"][0]["$ano"][0]
-                                                  ["$mes"][index]
-                                              ["receita descrição"] !=
-                                          null
-                                      ? _listfinance[0]["carteira"][0]["$ano"]
-                                                  [0]["$mes"][index]
-                                              ["receita descrição"]
-                                          .toString()
-                                      : "",
-                              style: TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
-                                          [index]["gastos data"] !=
+                                      : _listfinance[0]["carteira"][0]["$ano"][0]
+                                  ["$mes"][index]
+                                  ["receita descrição"] !=
                                       null
-                                  ? _listfinance[0]["carteira"][0]["$ano"][0]
-                                          ["$mes"][index]["gastos data"]
-                                      .toString()
-                                  : _listfinance[0]["carteira"][0]["$ano"][0]
-                                              ["$mes"][index]["receita data"] !=
-                                          null
                                       ? _listfinance[0]["carteira"][0]["$ano"]
-                                              [0]["$mes"][index]["receita data"]
-                                          .toString()
+                                  [0]["$mes"][index]
+                                  ["receita descrição"]
+                                      .toString()
                                       : "",
-                              style:
+                                  style: TextStyle(
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                Text(
+                                  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
+                                  [index]["gastos data"] !=
+                                      null
+                                      ? _listfinance[0]["carteira"][0]["$ano"][0]
+                                  ["$mes"][index]["gastos data"]
+                                      .toString()
+                                      : _listfinance[0]["carteira"][0]["$ano"][0]
+                                  ["$mes"][index]["receita data"] !=
+                                      null
+                                      ? _listfinance[0]["carteira"][0]["$ano"]
+                                  [0]["$mes"][index]["receita data"]
+                                      .toString()
+                                      : "",
+                                  style:
                                   TextStyle(fontSize: 14, color: Colors.white),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      )
-                    ])),
+                          )
+                        ])),
                     Container(
                       child: Text(
                         _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]
-                                    ["gastos valor"] !=
-                                null
+                        ["gastos valor"] !=
+                            null
                             ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
-                                    [index]["gastos valor"]
-                                .toString()
+                        [index]["gastos valor"]
+                            .toString()
                             : _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
-                                        [index]["receita valor"] !=
-                                    null
-                                ? _listfinance[0]["carteira"][0]["$ano"][0]
-                                        ["$mes"][index]["receita valor"]
-                                    .toString()
-                                : "",
+                        [index]["receita valor"] !=
+                            null
+                            ? _listfinance[0]["carteira"][0]["$ano"][0]
+                        ["$mes"][index]["receita valor"]
+                            .toString()
+                            : "",
                         style: TextStyle(fontSize: 22, color: Colors.white),
                       ),
                     )
@@ -495,7 +521,8 @@ class _HomeState extends State<Home> {
       ),
       onDismissed: (direction) {
         setState(() {
-          _lastRemoved = Map.from(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]);
+          _lastRemoved = Map.from(
+              _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]);
           _lastRemovedPos = index;
           print(_lastRemoved);
           _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].removeAt(index);
@@ -533,19 +560,19 @@ class _HomeState extends State<Home> {
 
   Image selectImage(int index) {
     if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]
-            ["receita descrição"] !=
+    ["receita descrição"] !=
         null) {
       return Image.asset(AppImages.arrow);
     } else if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]
-            ["tipo de gastos"] ==
+    ["tipo de gastos"] ==
         1) {
       return Image.asset(AppImages.red);
     } else if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]
-            ["tipo de gastos"] ==
+    ["tipo de gastos"] ==
         2) {
       return Image.asset(AppImages.yellow);
     } else if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]
-            ["tipo de gastos"] ==
+    ["tipo de gastos"] ==
         3) {
       return Image.asset(AppImages.green);
     }
