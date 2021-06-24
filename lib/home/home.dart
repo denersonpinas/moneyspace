@@ -113,31 +113,39 @@ class _HomeState extends State<Home> {
     }
   }
 
+  // Função adiciona 'Receitas' e 'Despesas' 
+  // recebendo do selection_page pelo recContact e passando para o _listfinance
   _addList(recContact) {
-    print(recContact);
+    print("Aqui");
     setState(() {
+      // 1° IF: Verificação se tem algo no _listfinance 'carteira'
+      // se true cria 'ano' e 'mes' e 'next' se false cria 'ano' e 'mes' e adiciona o recContact ao _listfinance
       if (_listfinance[0]["carteira"].length == 0) {
         _listfinance[0]["carteira"].add({"$ano": [{"$mes": []}]});
 
+        // 2° IF: Verifica se o 'ano' do _listfinance é == ao 'ano' do recContact
+        // se true 'next' se false se false cria 'ano' e 'mes' e adiciona o recContact ao _listfinance
         if ("$ano" == recContact["ano"]) {
-
+          // 3° IF: Verifica se estamos salvando uma receita ou um gasto
+          // se for receita 'next' se for gasto vai para else
           if (recContact["receita valor"] != null) { 
-
             _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);            
             setState(() {
               _iforText = "";
             });
 
           } else {
-
-            double percent = _setSaldoReceita() * 0.33;
+            double percent = _setSaldoReceita() * _setPercent(recContact["tipo de gastos"]);
+            double gastoTot = _setGastoTotal(recContact["tipo de gastos"]);            
+            // IF: A variavel 'percent' recebe o valor maximo suportado pelo tipo do gasto
+            // Se o 'percente' for menor que o valor imputado ele não deixa salvar
+            // Se false ele salva 
             if (percent < UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"])) {
               setState(() {
                 _iforText = "Aumente sua receita, sinal lotado!";
               });
 
-            } else {
-
+            } else {            
               _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
 
               setState(() {
@@ -147,38 +155,61 @@ class _HomeState extends State<Home> {
             }
           }
         } else {
-
           _listfinance[0]["carteira"].add({recContact["ano"]: [{recContact["mes"]: []}]});
           _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]].add(recContact);
 
         }
       } else if ("$ano" == recContact["ano"]) {
-        if (recContact["receita valor"] != null) {
-          _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
+        print("Aqui 11");
+        if (recContact["receita valor"] != null) { 
+          _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);            
           setState(() {
             _iforText = "";
           });
+
         } else {
-          double percent = _setSaldoReceita() * 0.33;
-          if (percent < UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"])) {
+          List convertList = [{1:"gastos essenciais", 2:"gastos não essenciais", 3:"investimentos"}];
+          double percent = _setSaldoReceita() * _listmetas[0][convertList[0][recContact["tipo de gastos"]]];
+          double gastoTot = _setGastoTotal(recContact["tipo de gastos"]) + UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"]);            
+          // IF: A variavel 'percent' recebe o valor maximo suportado pelo tipo do gasto
+          // Se o 'percente' for menor que o valor imputado ele não deixa salvar
+          // Se false ele salva 
+          if (percent >= gastoTot) {
+            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
+
+            setState(() {
+              _iforText = "";
+            }); 
+          } else {           
             setState(() {
               _iforText = "Aumente sua receita, sinal lotado!";
             });
-          } else {
-            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
-            setState(() {
-              _iforText = "";
-            });
           }
         }
+        // if (recContact["receita valor"] != null) {
+        //   _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
+        //   setState(() {
+        //     _iforText = "";
+        //   });
+        // } else {
+        //   double percent = _setSaldoReceita() * 0.33;
+        //   if (percent < UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"])) {
+        //     setState(() {
+        //       _iforText = "Aumente sua receita, sinal lotado!";
+        //     });
+        //   } else {
+        //     _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
+        //     setState(() {
+        //       _iforText = "";
+        //     });
+        //   }
+        // }
       } else {
-        _listfinance[0]["carteira"].add({
-          recContact["ano"]: [
-            {recContact["mes"]: []}
-          ]
-        });
-        _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]]
-            .add(recContact);
+        print("Aqui 10");
+        _listfinance[0]["carteira"].add(
+          {recContact["ano"]: [{recContact["mes"]: []}]}
+        );
+        _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]].add(recContact);
       }
       saveData(_listfinance[0]["carteira"], "test20");
     });
@@ -226,6 +257,18 @@ class _HomeState extends State<Home> {
       percent = 0.0;
     }
     return percent;
+  }
+
+  _setGastoTotal(tipo){
+    double calcgastostipo = 0;
+
+    for (l = 0; l < _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++) {
+      if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null && _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["tipo de gastos"] == tipo) {
+        calcgastostipo = UtilBrasilFields.converterMoedaParaDouble( _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"]: "0") + calcgastostipo;
+      }
+    }
+
+    return calcgastostipo;
   }
 
   @override
@@ -496,31 +539,103 @@ class _HomeState extends State<Home> {
       onDismissed: (direction) {
         setState(() {
           _lastRemoved = Map.from(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][index]);
-          _lastRemovedPos = index;
-          print(_lastRemoved);
-          _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].removeAt(index);
+          _lastRemovedPos = index;          
+          if(_lastRemoved["receita valor"] != null) {
+            final rec =  _setSaldoReceita();
+            final receitaTotal =  (rec) - (UtilBrasilFields.converterMoedaParaDouble(_lastRemoved["receita valor"]) != null ? UtilBrasilFields.converterMoedaParaDouble(_lastRemoved["receita valor"]) : UtilBrasilFields.converterMoedaParaDouble(_lastRemoved["gastos valor"]) != null ? UtilBrasilFields.converterMoedaParaDouble(_lastRemoved["gastos valor"]) : 0);
+            final resp = (receitaTotal >= ((rec) * (_percentualpre())));         
+            final result =  receitaTotal - _setSaldoTotGastos();
+            
+            if(result >= 0 && resp == true){
+              setState(() {
+                _iforText = "";
+              });
+               _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].removeAt(index);
 
-          saveData(_listfinance[0]["carteira"], "test20");
+                saveData(_listfinance[0]["carteira"], "test20");
 
-          final snack = SnackBar(
-            content: Text("Aplicação removida!"),
-            action: SnackBarAction(
-              label: "Desfazer",
-              onPressed: () {
-                setState(() {
-                  _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
-                      .insert(_lastRemovedPos, _lastRemoved);
-                  saveData(_listfinance[0]["carteira"], "test20");
-                });
-              },
-            ),
-            duration: Duration(seconds: 2),
-          );
+                final snack = SnackBar(
+                  content: Text("Aplicação removida!"),
+                  action: SnackBarAction(
+                    label: "Desfazer",
+                    onPressed: () {
+                      setState(() {
+                        _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
+                            .insert(_lastRemovedPos, _lastRemoved);
+                        saveData(_listfinance[0]["carteira"], "test20");
+                      });
+                    },
+                  ),
+                  duration: Duration(seconds: 5),
+                );
 
-          ScaffoldMessenger.of(context).showSnackBar(snack);
+                ScaffoldMessenger.of(context).showSnackBar(snack);        
+            } else {
+              print("ESSE $result >= 0 && $resp == true");
+              setState(() {
+                _iforText = "Ação não realizada, por favor exclua um gasto antes";
+              });
+            }
+            
+          } else {
+            setState(() {
+              _iforText = "";
+            });
+
+            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].removeAt(index);
+
+            saveData(_listfinance[0]["carteira"], "test20");
+
+            final snack = SnackBar(
+              content: Text("Aplicação removida!"),
+              action: SnackBarAction(
+                label: "Desfazer",
+                onPressed: () {
+                  setState(() {
+                    _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
+                        .insert(_lastRemovedPos, _lastRemoved);
+                    saveData(_listfinance[0]["carteira"], "test20");
+                  });
+                },
+              ),
+              duration: Duration(seconds: 2),
+            );
+
+            ScaffoldMessenger.of(context).showSnackBar(snack);                     
+          }
+
+          // setState(() {
+          //     _iforText = "";
+          //   });
+
+          //   _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].removeAt(index);
+
+          //   saveData(_listfinance[0]["carteira"], "test20");
+
+          //   final snack = SnackBar(
+          //     content: Text("Aplicação removida!"),
+          //     action: SnackBarAction(
+          //       label: "Desfazer",
+          //       onPressed: () {
+          //         setState(() {
+          //           _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
+          //               .insert(_lastRemovedPos, _lastRemoved);
+          //           saveData(_listfinance[0]["carteira"], "test20");
+          //         });
+          //       },
+          //     ),
+          //     duration: Duration(seconds: 2),
+          //   );
+
+          //   ScaffoldMessenger.of(context).showSnackBar(snack);
+          
         });
       },
     );
+  } 
+
+  _percentualpre(){
+    return (_setPercent(1) + _setPercent(2) + _setPercent(3) / 3); 
   }
 
   void _showSelectionPage() async {
