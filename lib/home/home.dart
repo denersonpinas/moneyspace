@@ -86,11 +86,17 @@ class _HomeState extends State<Home> {
       return 0.0;
     } else if (_setCount() > 0) {
       double calcgastos = 0;
-      for (l = 0; l < _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length; l++) {
-        if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null) {
-          calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastos;
+      int contAno;
+      for(contAno = 0; contAno < _listfinance[0]["carteira"][0]["$ano"].length; contAno++){
+        for (l = 0; l < _listfinance[0]["carteira"][0]["$ano"][contAno]["$mes"].length; l++) {
+          print("ESSE ${_listfinance[0]["carteira"][0]["$ano"].length}");
+          print("ESSE ${_listfinance[0]["carteira"][0]["$ano"][contAno]}");
+          if (_listfinance[0]["carteira"][0]["$ano"][contAno]["$mes"][l]["gastos valor"] != null) {
+            calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastos;
+          }
         }
       }
+      
       return calcgastos;
     } else {
       return 0.0;
@@ -102,11 +108,15 @@ class _HomeState extends State<Home> {
       return 0.00;
     } else if (_setCount() > 0) {
       double calcsaldoReceita = 0;
-      for (l = 0; l < _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].length;l++) {
-        if (_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null) {
-          calcsaldoReceita = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldoReceita;
+      int contAno;
+      for(contAno = 0; contAno < _listfinance[0]["carteira"][0]["$ano"].length;contAno++){
+        for (l = 0; l < _listfinance[0]["carteira"][0]["$ano"][contAno]["$mes"].length;l++) {
+          if (_listfinance[0]["carteira"][0]["$ano"][contAno]["$mes"][l]["receita valor"] != null) {
+            calcsaldoReceita = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldoReceita;
+          }
         }
       }
+      
       return calcsaldoReceita;
     } else {
       return 0.00;
@@ -116,7 +126,7 @@ class _HomeState extends State<Home> {
   // Função adiciona 'Receitas' e 'Despesas' 
   // recebendo do selection_page pelo recContact e passando para o _listfinance
   _addList(recContact) {
-    print("Aqui");
+    print(_listfinance);
     setState(() {
       // 1° IF: Verificação se tem algo no _listfinance 'carteira'
       // se true cria 'ano' e 'mes' e 'next' se false cria 'ano' e 'mes' e adiciona o recContact ao _listfinance
@@ -205,10 +215,7 @@ class _HomeState extends State<Home> {
         //   }
         // }
       } else {
-        print("Aqui 10");
-        _listfinance[0]["carteira"].add(
-          {recContact["ano"]: [{recContact["mes"]: []}]}
-        );
+        _listfinance[0]["carteira"].add({recContact["ano"]: [{recContact["mes"]: []}]});
         _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]].add(recContact);
       }
       saveData(_listfinance[0]["carteira"], "test20");
@@ -314,7 +321,7 @@ class _HomeState extends State<Home> {
               subtitle: Text('Edite seu nome ou apelido'),
               onTap: () {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LoginPage()));
+                    MaterialPageRoute(builder: (context) => LoginPage(acesso: 1,)));
               },
             ),
             ListTile(
