@@ -87,16 +87,20 @@ class _HomeState extends State<Home> {
     } else if (_setCount() > 0) {
       double calcgastos = 0;
       int contAno;
-      for(contAno = 0; contAno < _listfinance[0]["carteira"][0]["$ano"].length; contAno++){
-        for (l = 0; l < _listfinance[0]["carteira"][0]["$ano"][contAno]["$mes"].length; l++) {
-          print("ESSE ${_listfinance[0]["carteira"][0]["$ano"].length}");
-          print("ESSE ${_listfinance[0]["carteira"][0]["$ano"][contAno]}");
-          if (_listfinance[0]["carteira"][0]["$ano"][contAno]["$mes"][l]["gastos valor"] != null) {
-            calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastos;
+      int contMes;
+      
+      for(contAno = 0; contAno < _listfinance[0]["carteira"].length; contAno++){
+        
+        for(contMes = 0; contMes < _listfinance[0]["carteira"][contAno]["$ano"].length; contMes++){
+          
+          for (l = 0; l < _listfinance[0]["carteira"][contAno]["$ano"][contMes]["$mes"].length; l++) {
+           
+            if (_listfinance[0]["carteira"][0]["$ano"][contAno]["$mes"][l]["gastos valor"] != null) {
+              calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] : "0") + calcgastos;
+            }
           }
         }
-      }
-      
+      }  
       return calcgastos;
     } else {
       return 0.0;
@@ -109,13 +113,17 @@ class _HomeState extends State<Home> {
     } else if (_setCount() > 0) {
       double calcsaldoReceita = 0;
       int contAno;
-      for(contAno = 0; contAno < _listfinance[0]["carteira"][0]["$ano"].length;contAno++){
-        for (l = 0; l < _listfinance[0]["carteira"][0]["$ano"][contAno]["$mes"].length;l++) {
-          if (_listfinance[0]["carteira"][0]["$ano"][contAno]["$mes"][l]["receita valor"] != null) {
-            calcsaldoReceita = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldoReceita;
+      int contMes;
+      for(contAno = 0; contAno < _listfinance[0]["carteira"].length;contAno++){
+        for(contMes = 0; contMes < _listfinance[0]["carteira"][contAno]["$ano"].length; contMes++){
+          for (l = 0; l < _listfinance[0]["carteira"][0]["$ano"][contAno]["$mes"].length;l++) {
+            if (_listfinance[0]["carteira"][0]["$ano"][contAno]["$mes"][l]["receita valor"] != null) {
+              calcsaldoReceita = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["receita valor"] : "0") + calcsaldoReceita;
+            }
           }
         }
       }
+      
       
       return calcsaldoReceita;
     } else {
@@ -218,7 +226,7 @@ class _HomeState extends State<Home> {
         _listfinance[0]["carteira"].add({recContact["ano"]: [{recContact["mes"]: []}]});
         _listfinance[0]["carteira"][0][recContact["ano"]][0][recContact["mes"]].add(recContact);
       }
-      saveData(_listfinance[0]["carteira"], "test20");
+      saveData(_listfinance[0]["carteira"], "test21");
     });
   }
 
@@ -281,7 +289,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    readData("test20").then((dynamic data) {
+    readData("test21").then((dynamic data) {
       setState(() {
         _listfinance[0]["carteira"] = json.decode(data);
       });
@@ -559,7 +567,7 @@ class _HomeState extends State<Home> {
               });
                _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].removeAt(index);
 
-                saveData(_listfinance[0]["carteira"], "test20");
+                saveData(_listfinance[0]["carteira"], "test21");
 
                 final snack = SnackBar(
                   content: Text("Aplicação removida!"),
@@ -569,7 +577,7 @@ class _HomeState extends State<Home> {
                       setState(() {
                         _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
                             .insert(_lastRemovedPos, _lastRemoved);
-                        saveData(_listfinance[0]["carteira"], "test20");
+                        saveData(_listfinance[0]["carteira"], "test21");
                       });
                     },
                   ),
@@ -591,7 +599,7 @@ class _HomeState extends State<Home> {
 
             _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].removeAt(index);
 
-            saveData(_listfinance[0]["carteira"], "test20");
+            saveData(_listfinance[0]["carteira"], "test21");
 
             final snack = SnackBar(
               content: Text("Aplicação removida!"),
@@ -601,7 +609,7 @@ class _HomeState extends State<Home> {
                   setState(() {
                     _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
                         .insert(_lastRemovedPos, _lastRemoved);
-                    saveData(_listfinance[0]["carteira"], "test20");
+                    saveData(_listfinance[0]["carteira"], "test21");
                   });
                 },
               ),
@@ -617,7 +625,7 @@ class _HomeState extends State<Home> {
 
           //   _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].removeAt(index);
 
-          //   saveData(_listfinance[0]["carteira"], "test20");
+          //   saveData(_listfinance[0]["carteira"], "test21");
 
           //   final snack = SnackBar(
           //     content: Text("Aplicação removida!"),
@@ -627,7 +635,7 @@ class _HomeState extends State<Home> {
           //         setState(() {
           //           _listfinance[0]["carteira"][0]["$ano"][0]["$mes"]
           //               .insert(_lastRemovedPos, _lastRemoved);
-          //           saveData(_listfinance[0]["carteira"], "test20");
+          //           saveData(_listfinance[0]["carteira"], "test21");
           //         });
           //       },
           //     ),
