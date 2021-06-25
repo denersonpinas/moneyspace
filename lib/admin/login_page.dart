@@ -11,6 +11,12 @@ import 'package:moneyspace/shared/widgets/text_field/text_field_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
+  final int acesso;
+
+  const LoginPage({
+    Key? key, 
+    required this.acesso
+  }) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -26,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
     readData("admin").then((dynamic data) {
       setState(() {
         _listname = json.decode(data);
-        print("ESSE ${_listname}");
       });
     });
     super.initState();
@@ -34,79 +39,89 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    if(_listname[0] != null){
-      print("entrei");    
-      print("entrei ${_listname}");  
-      if(_listname[0]["contador"] == 1) {        
-        return Scaffold(
-          backgroundColor: AppColors.darkGreyBlack,
-          body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 34),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          "Digite seu usuario!",
-                          style:
-                          AppTextStyles.title,
-                        )
-                      ),
-                    ]
-                  )
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  child: Column(
+    try{
+      if(_listname[0] != null){ 
+        if(_listname[0]["contador"] == 1 || widget.acesso == 1) {        
+          return Scaffold(
+            backgroundColor: AppColors.darkGreyBlack,
+            body: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 34),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text(
+                            "Digite seu usuario!",
+                            style:
+                            AppTextStyles.title,
+                          )
+                        ),
+                      ]
+                    )
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    child: Column(
+                      children: [
+                        TextFieldWidget(
+                          label: "Nome ou Apelido",
+                          nameController: _nameController,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      TextFieldWidget(
-                        label: "Nome ou Apelido",
-                        nameController: _nameController,
+                      Expanded(
+                        child: ConfirmedButtonWidget.green(
+                          label: "Inserir", 
+                          onTap: (){
+                            _listname[0]["user"] = _nameController.text != "" ? _nameController.text : "user";
+                            if(_listname[0]["contador"] == 1 || _listname[0]["contador"] < 2){
+                              _listname[0]["contador"] = _listname[0]["contador"] + 1; 
+                            }                      
+                            saveData(_listname, "admin");
+                            Navigator.pushReplacement(
+                              context, MaterialPageRoute(builder: (context) => Home())
+                            );
+                          }
+                        )
                       ),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: ConfirmedButtonWidget.green(
-                        label: "Inserir", 
-                        onTap: (){
-                          _listname[0]["user"] = _nameController.text != "" ? _nameController.text : "user";
-                          if(_listname[0]["contador"] == 1 || _listname[0]["contador"] < 2){
-                            _listname[0]["contador"] = _listname[0]["contador"] + 1; 
-                          }                      
-                          saveData(_listname, "admin");
-                          Navigator.pushReplacement(
-                            context, MaterialPageRoute(builder: (context) => Home())
-                          );
-                        }
-                      )
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        );
-      } else {
-        print("entrei else");
-        Future.delayed(Duration(
-          seconds:  0
-        )).then((_)=> Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home())
-        ));
+          );
+        } else {
+          Future.delayed(Duration(
+            seconds:  0
+          )).then((_)=> Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Home())
+          ));
 
+          return Scaffold(
+            body: Container(
+              decoration: BoxDecoration(
+                gradient: AppGradients.linear,
+              ),
+              child: Center(
+                child: Image.asset(AppImages.logo)        
+              ),
+            ),
+          );
+        }      
+      } else {
         return Scaffold(
           body: Container(
             decoration: BoxDecoration(
@@ -117,9 +132,8 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         );
-      }      
-    } else {
-      print("entrei else 2");
+      }
+    } catch(e) {
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
@@ -130,6 +144,6 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       );
-    }  
+    }
   }
 }
