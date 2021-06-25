@@ -306,7 +306,7 @@ class _HomeState extends State<Home> {
     });
     readData("admin").then((dynamic data) {
       setState(() {
-        _listname[0]["user"] = json.decode(data);
+        _listname = json.decode(data);
       });
     });
     readData("metas").then((dynamic data) {
