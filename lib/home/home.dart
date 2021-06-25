@@ -347,10 +347,14 @@ class _HomeState extends State<Home> {
               title: Text('Editar Metas'),
               subtitle: Text('Definir % das metas'),
               onTap: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PercentualWidget()));
+                if(_setSaldoTotGastos() > 0){
+                  _iforText = "Para mudar as porcentagens das metas remova os gastos!";
+                }else{
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PercentualWidget()));
+                }
               },
             ),
             ListTile(
