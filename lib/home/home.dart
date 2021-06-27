@@ -135,7 +135,6 @@ class _HomeState extends State<Home> {
   // Função adiciona 'Receitas' e 'Despesas' 
   // recebendo do selection_page pelo recContact e passando para o _listfinance
   _addList(recContact) {
-    print(_listfinance);
     setState(() {
       // 1° IF: Verificação se tem algo no _listfinance 'carteira'
       // se true cria 'ano' e 'mes' e 'next' se false cria 'ano' e 'mes' e adiciona o recContact ao _listfinance
@@ -148,7 +147,7 @@ class _HomeState extends State<Home> {
           // 3° IF: Verifica se estamos salvando uma receita ou um gasto
           // se for receita 'next' se for gasto vai para else
           if (recContact["receita valor"] != null) { 
-            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);            
+            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
             setState(() {
               _iforText = "";
             });
@@ -177,9 +176,8 @@ class _HomeState extends State<Home> {
 
         }
       } else if ("$ano" == recContact["ano"]) {
-        print("Aqui 11");
-        if (recContact["receita valor"] != null) { 
-          _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);            
+        if (recContact["receita valor"] != null) {
+          _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
           setState(() {
             _iforText = "";
           });
@@ -227,6 +225,7 @@ class _HomeState extends State<Home> {
       }
       saveData(_listfinance[0]["carteira"], "test21");
     });
+    print(_listfinance);
   }
 
   setData() {
@@ -350,9 +349,13 @@ class _HomeState extends State<Home> {
               title: Text('Editar Metas'),
               subtitle: Text('Definir % das metas'),
               onTap: () {
-                if(_setSaldoTotGastos() > 0){
-                  _iforText = "Para mudar as porcentagens das metas remova os gastos!";
+                if(_setSaldoTotGastos() > 0 || mes != _mes[0][DateTime.now().month]){
+                  setState(() {
+                    _iforText = "Para mudar as porcentagens das metas remova os gastos!";
+                  });
                 }else{
+                  print(_mes[0][DateTime.now().month]);
+                  print(mes);
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(

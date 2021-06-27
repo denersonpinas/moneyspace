@@ -13,10 +13,7 @@ import 'package:flutter/material.dart';
 class LoginPage extends StatefulWidget {
   final int acesso;
 
-  const LoginPage({
-    Key? key, 
-    required this.acesso
-  }) : super(key: key);
+  const LoginPage({Key? key, required this.acesso}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -39,9 +36,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    try{
-      if(_listname[0] != null){ 
-        if(_listname[0]["contador"] == 1 || widget.acesso == 1) {        
+    try {
+      if (_listname[0] != null) {
+        if (_listname[0]["contador"] == 1 || widget.acesso == 1) {
           return Scaffold(
             backgroundColor: AppColors.darkGreyBlack,
             body: Padding(
@@ -51,18 +48,13 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            "Digite seu usuario!",
-                            style:
-                            AppTextStyles.title,
-                          )
-                        ),
-                      ]
-                    )
-                  ),
+                      child: Row(children: <Widget>[
+                    Expanded(
+                        child: Text(
+                      "Digite seu usuario!",
+                      style: AppTextStyles.title,
+                    )),
+                  ])),
                   SizedBox(
                     height: 10,
                   ),
@@ -83,20 +75,24 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Expanded(
-                        child: ConfirmedButtonWidget.green(
-                          label: "Inserir", 
-                          onTap: (){
-                            _listname[0]["user"] = _nameController.text != "" ? _nameController.text : "user";
-                            if(_listname[0]["contador"] == 1 || _listname[0]["contador"] < 2){
-                              _listname[0]["contador"] = _listname[0]["contador"] + 1; 
-                            }                      
-                            saveData(_listname, "admin");
-                            Navigator.pushReplacement(
-                              context, MaterialPageRoute(builder: (context) => Home())
-                            );
-                          }
-                        )
-                      ),
+                          child: ConfirmedButtonWidget.green(
+                              label: "Inserir",
+                              onTap: () {
+                                _listname[0]["user"] =
+                                    _nameController.text != ""
+                                        ? _nameController.text
+                                        : "user";
+                                if (_listname[0]["contador"] == 1 ||
+                                    _listname[0]["contador"] < 2) {
+                                  _listname[0]["contador"] =
+                                      _listname[0]["contador"] + 1;
+                                }
+                                saveData(_listname, "admin");
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Home()));
+                              })),
                     ],
                   ),
                 ],
@@ -104,44 +100,36 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else {
-          Future.delayed(Duration(
-            seconds:  0
-          )).then((_)=> Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Home())
-          ));
+          Future.delayed(Duration(seconds: 0)).then((_) =>
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => Home())));
 
           return Scaffold(
             body: Container(
               decoration: BoxDecoration(
                 gradient: AppGradients.linear,
               ),
-              child: Center(
-                child: Image.asset(AppImages.logo)        
-              ),
+              child: Center(child: Image.asset(AppImages.logo)),
             ),
           );
-        }      
+        }
       } else {
         return Scaffold(
           body: Container(
             decoration: BoxDecoration(
               gradient: AppGradients.linear,
             ),
-            child: Center(
-              child: Image.asset(AppImages.logo)        
-            ),
+            child: Center(child: Image.asset(AppImages.logo)),
           ),
         );
       }
-    } catch(e) {
+    } catch (e) {
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
             gradient: AppGradients.linear,
           ),
-          child: Center(
-            child: Image.asset(AppImages.logo)        
-          ),
+          child: Center(child: Image.asset(AppImages.logo)),
         ),
       );
     }
