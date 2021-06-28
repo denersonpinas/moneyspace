@@ -26,12 +26,15 @@ class _LoginPageState extends State<LoginPage> {
   final _nameController = TextEditingController();
 
   List _listname = [];
+  int contadorNext = 1;
+  int contadorPreviuw = 0;
 
   @override
   void initState() {
-    readData("admin").then((dynamic data) {
+    readData("nomec").then((dynamic data) {
       setState(() {
         _listname = json.decode(data);
+        contadorNext = 2;        
       });
     });
     super.initState();
@@ -40,7 +43,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     try{
-      if(_listname[0] != null){ 
+      contadorPreviuw++;
+      if(_listname.length > 0 && _listname[0]["contador"] != null){
         if(_listname[0]["contador"] == 1 || widget.acesso == 1) {        
           return Scaffold(
             backgroundColor: AppColors.darkGreyBlack,
@@ -90,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                             if(_listname[0]["contador"] == 1 || _listname[0]["contador"] < 2){
                               _listname[0]["contador"] = _listname[0]["contador"] + 1; 
                             }                      
-                            saveData(_listname, "admin");
+                            saveData(_listname, "nomec");
                             Navigator.pushReplacement(
                               context, MaterialPageRoute(builder: (context) => Home())
                             );
@@ -121,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         }      
-      } else {
+      } else if(contadorNext >= 1 && _listname.length == 1){
         return Scaffold(
           body: Container(
             decoration: BoxDecoration(
@@ -129,6 +133,68 @@ class _LoginPageState extends State<LoginPage> {
             ),
             child: Center(
               child: Image.asset(AppImages.logo)        
+            ),
+          ),
+        );        
+      } else {
+        return Scaffold(
+          backgroundColor: AppColors.darkGreyBlack,
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 34),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          "Digite seu usuario!",
+                          style:
+                          AppTextStyles.title,
+                        )
+                      ),
+                    ]
+                  )
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Column(
+                    children: [
+                      TextFieldWidget(
+                        label: "Nome ou Apelido",
+                        nameController: _nameController,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                      child: ConfirmedButtonWidget.green(
+                        label: "Inserir", 
+                        onTap: (){
+                          Map<String, dynamic> newname = Map();
+                          newname["user"] = _nameController.text != "" ? _nameController.text : "user";
+                          newname["contador"] = 2;
+                          _listname.add(newname) ;       
+                          saveData(_listname, "nomec");
+                          Navigator.pushReplacement(
+                            context, MaterialPageRoute(builder: (context) => Home())
+                          );
+                        }
+                      )
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         );

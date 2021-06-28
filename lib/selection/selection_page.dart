@@ -351,7 +351,6 @@ class _SelectionPageState extends State<SelectionPage> {
                       if(value!.isEmpty){
                         return"Este campo é obrigatório!";
                       }
-                      print(_valorController);
                     },
                   ),
 
