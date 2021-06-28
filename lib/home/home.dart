@@ -430,7 +430,7 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.all(10),
                 itemCount: _setCount(),
                 itemBuilder: (context, index) {
-                  return _gastosCard(context, index);
+                  return _gastosCard(context, (_setCount()-1)-index);
                 },
               ),
             ),
