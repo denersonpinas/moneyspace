@@ -167,7 +167,7 @@ class _HomeState extends State<Home> {
           // 3° IF: Verifica se estamos salvando uma receita ou um gasto
           // se for receita 'next' se for gasto vai para else
           if (recContact["receita valor"] != null) { 
-            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);            
+            _listfinance[0]["carteira"][0]["$ano"][0]["$mes"].add(recContact);
             setState(() {
               _iforText = "";
             });
@@ -227,6 +227,7 @@ class _HomeState extends State<Home> {
       }
       saveData(_listfinance[0]["carteira"], "test21");
     });
+    print(_listfinance);
   }
 
   setData() {
@@ -354,9 +355,13 @@ class _HomeState extends State<Home> {
               title: Text('Editar Metas'),
               subtitle: Text('Definir % das metas'),
               onTap: () {
-                if(_setSaldoTotGastos() > 0){
-                  _iforText = "Para mudar as porcentagens das metas remova os gastos!";
+                if(_setSaldoTotGastos() > 0 || mes != _mes[0][DateTime.now().month]){
+                  setState(() {
+                    _iforText = "Para mudar as porcentagens das metas remova os gastos!";
+                  });
                 }else{
+                  print(_mes[0][DateTime.now().month]);
+                  print(mes);
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -431,7 +436,7 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.all(10),
                 itemCount: _setCount(),
                 itemBuilder: (context, index) {
-                  return _gastosCard(context, index);
+                  return _gastosCard(context, (_setCount()-1)-index);
                 },
               ),
             ),

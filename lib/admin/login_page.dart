@@ -13,10 +13,7 @@ import 'package:flutter/material.dart';
 class LoginPage extends StatefulWidget {
   final int acesso;
 
-  const LoginPage({
-    Key? key, 
-    required this.acesso
-  }) : super(key: key);
+  const LoginPage({Key? key, required this.acesso}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -55,18 +52,13 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    child: Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: Text(
-                            "Digite seu usuario!",
-                            style:
-                            AppTextStyles.title,
-                          )
-                        ),
-                      ]
-                    )
-                  ),
+                      child: Row(children: <Widget>[
+                    Expanded(
+                        child: Text(
+                      "Digite seu usuario!",
+                      style: AppTextStyles.title,
+                    )),
+                  ])),
                   SizedBox(
                     height: 10,
                   ),
@@ -108,20 +100,16 @@ class _LoginPageState extends State<LoginPage> {
             ),
           );
         } else {
-          Future.delayed(Duration(
-            seconds:  0
-          )).then((_)=> Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Home())
-          ));
+          Future.delayed(Duration(seconds: 0)).then((_) =>
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => Home())));
 
           return Scaffold(
             body: Container(
               decoration: BoxDecoration(
                 gradient: AppGradients.linear,
               ),
-              child: Center(
-                child: Image.asset(AppImages.logo)        
-              ),
+              child: Center(child: Image.asset(AppImages.logo)),
             ),
           );
         }      
@@ -131,9 +119,7 @@ class _LoginPageState extends State<LoginPage> {
             decoration: BoxDecoration(
               gradient: AppGradients.linear,
             ),
-            child: Center(
-              child: Image.asset(AppImages.logo)        
-            ),
+            child: Center(child: Image.asset(AppImages.logo)),
           ),
         );        
       } else {
@@ -199,15 +185,13 @@ class _LoginPageState extends State<LoginPage> {
           ),
         );
       }
-    } catch(e) {
+    } catch (e) {
       return Scaffold(
         body: Container(
           decoration: BoxDecoration(
             gradient: AppGradients.linear,
           ),
-          child: Center(
-            child: Image.asset(AppImages.logo)        
-          ),
+          child: Center(child: Image.asset(AppImages.logo)),
         ),
       );
     }
