@@ -11,10 +11,7 @@ import 'package:moneyspace/shared/widgets/text_field/text_field_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
-  final int acesso;
-
-  const LoginPage({Key? key, required this.acesso}) : super(key: key);
-
+  
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -22,178 +19,99 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _nameController = TextEditingController();
 
-  List _listname = [];
+  List _listname = [
+    {
+      "user": ""
+    }
+  ];
   int contadorNext = 1;
   int contadorPreviuw = 0;
 
   @override
-  void initState() {
+  void initState() {    
     readData("nomec").then((dynamic data) {
-      setState(() {
-        _listname = json.decode(data);
-        contadorNext = 2;        
-      });
+      _listname = json.decode(data);
+      _nameController.text = _listname[0]["user"];
     });
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    try{
-      contadorPreviuw++;
-      if(_listname.length > 0 && _listname[0]["contador"] != null){
-        if(_listname[0]["contador"] == 1 || widget.acesso == 1) {        
-          return Scaffold(
-            backgroundColor: AppColors.darkGreyBlack,
-            body: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 34),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                      child: Row(children: <Widget>[
-                    Expanded(
-                        child: Text(
-                      "Digite seu usuario!",
-                      style: AppTextStyles.title,
-                    )),
-                  ])),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    child: Column(
-                      children: [
-                        TextFieldWidget(
-                          label: "Nome ou Apelido",
-                          nameController: _nameController,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: ConfirmedButtonWidget.green(
-                          label: "Inserir", 
-                          onTap: (){
-                            _listname[0]["user"] = _nameController.text != "" ? _nameController.text : "user";
-                            if(_listname[0]["contador"] == 1 || _listname[0]["contador"] < 2){
-                              _listname[0]["contador"] = _listname[0]["contador"] + 1; 
-                            }                      
-                            saveData(_listname, "nomec");
-                            Navigator.pushReplacement(
-                              context, MaterialPageRoute(builder: (context) => Home())
-                            );
-                          }
-                        )
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        } else {
-          Future.delayed(Duration(seconds: 0)).then((_) =>
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => Home())));
-
-          return Scaffold(
-            body: Container(
-              decoration: BoxDecoration(
-                gradient: AppGradients.linear,
-              ),
-              child: Center(child: Image.asset(AppImages.logo)),
-            ),
-          );
-        }      
-      } else if(contadorNext >= 1 && _listname.length == 1){
-        return Scaffold(
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: AppGradients.linear,
-            ),
-            child: Center(child: Image.asset(AppImages.logo)),
-          ),
-        );        
-      } else {
-        return Scaffold(
-          backgroundColor: AppColors.darkGreyBlack,
-          body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 34),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          "Digite seu usuario!",
-                          style:
-                          AppTextStyles.title,
-                        )
-                      ),
-                    ]
+  Widget build(BuildContext context) {    
+    return Scaffold(
+      backgroundColor: AppColors.darkGreyBlack,
+      body: 
+      SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height/2.5,
+                decoration: BoxDecoration(
+                  gradient: AppGradients.linear,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(97)
                   )
                 ),
-                SizedBox(
-                  height: 10,
+                child: Center(
+                  child: Image.asset(
+                    AppImages.logo,
+                    scale: 10
+                  )        
                 ),
-                Container(
-                  child: Column(
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 80, left: 32, right: 32),
+                child:
+                  Column(
                     children: [
-                      TextFieldWidget(
-                        label: "Nome ou Apelido",
-                        nameController: _nameController,
+                      Container(                        
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Digite seu usuario!",
+                            style: AppTextStyles.title,
+                          ),
+                        )
                       ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: ConfirmedButtonWidget.green(
-                        label: "Inserir", 
-                        onTap: (){
-                          Map<String, dynamic> newname = Map();
-                          newname["user"] = _nameController.text != "" ? _nameController.text : "user";
-                          newname["contador"] = 2;
-                          _listname.add(newname) ;       
-                          saveData(_listname, "nomec");
-                          Navigator.pushReplacement(
-                            context, MaterialPageRoute(builder: (context) => Home())
-                          );
-                        }
-                      )
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Column(
+                        children: [
+                          TextFieldWidget(
+                            label: "Nome ou Apelido",
+                            nameController: _nameController,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Expanded(
+                            child: ConfirmedButtonWidget.green(
+                              label: "Entrar", 
+                              onTap: (){
+                                _listname[0]["user"] = _nameController.text != "" ? _nameController.text : "user";                    
+                                saveData(_listname, "nomec");
+                                Navigator.pushReplacement(
+                                  context, MaterialPageRoute(builder: (context) => Home())
+                                );
+                              }
+                            )
+                          ),
+                        ],
+                      ),
+                    ],)
+                ),            
+            ],
           ),
-        );
-      }
-    } catch (e) {
-      return Scaffold(
-        body: Container(
-          decoration: BoxDecoration(
-            gradient: AppGradients.linear,
-          ),
-          child: Center(child: Image.asset(AppImages.logo)),
         ),
-      );
-    }
+      )      
+    );
   }
 }

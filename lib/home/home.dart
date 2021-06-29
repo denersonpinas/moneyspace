@@ -16,7 +16,9 @@ import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   @override
-  _HomeState createState() => _HomeState();
+  _HomeState createState() {
+    return _HomeState();
+  }
 }
 
 class _HomeState extends State<Home> {
@@ -79,37 +81,39 @@ class _HomeState extends State<Home> {
 
   _setCount() {
     int countList = _listfinance[0]["carteira"].length;
-    int countAnoList = _listfinance[0]["carteira"][0]["${2021 + (countList - 1)}"].length;
+    int countAnoList;
     int countMesList;
-    if(_listfinance[0]["carteira"][0]["$ano"][0]["$mes"] != null){      
-      countMesList = _listfinance[0]["carteira"][0]["${2021 + (countList - 1)}"][0][_mes[0][6 + (countAnoList - 1)]].length;
+
+    if(countList > 0){
+      if(_listfinance[0]["carteira"][0]["${2021 + (countList)}"] != null){      
+        countAnoList = _listfinance[0]["carteira"][0]["${2021 + (countList - 1)}"].length;      
+        countMesList = _listfinance[0]["carteira"][0]["${2021 + (countList - 1)}"][0][_mes[0][6 + (countAnoList - 1)]].length;
+      } else {
+        countList = 0;
+        countAnoList = 0;
+        countMesList = 0;
+      }
     } else {
+      countAnoList = 0;
       countMesList = 0;
     }
     
     try {
       if (countList == 0) {
-        print("true 1");
         return 0;
-      } else if (countAnoList > 0 &&
-          countMesList > 0) {
-        print("true 2");
+      } else if (countAnoList > 0 && countMesList > 0) {
         return countMesList;
       } else {
-        print("true 3");
         return 0;
       }
     } catch (e) {
-      print("true 4");
       return 0;
     }
   }
 
   _setSaldo() {
-    // print(_setSaldoReceita());
     NumberFormat formatter = NumberFormat("0.00");
     final resultado = _setSaldoReceita() - _setSaldoTotGastos();
-    print("true 5");
     return formatter.format(resultado);
   }
 
@@ -227,7 +231,6 @@ class _HomeState extends State<Home> {
       }
       saveData(_listfinance[0]["carteira"], "test21");
     });
-    print(_listfinance);
   }
 
   setData() {
@@ -288,7 +291,6 @@ class _HomeState extends State<Home> {
     } else {
       percent = 0.0;
     }
-    print("true 6");
     return percent;
   }
 
@@ -300,7 +302,6 @@ class _HomeState extends State<Home> {
         calcgastostipo = UtilBrasilFields.converterMoedaParaDouble( _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0]["$ano"][0]["$mes"][l]["gastos valor"]: "0") + calcgastostipo;
       }
     }
-    print("true 7");
     return calcgastostipo;
   }
 
@@ -336,8 +337,8 @@ class _HomeState extends State<Home> {
                 currentAccountPicture: ClipRRect(
                     borderRadius: BorderRadius.circular(40),
                     child: Image.asset(
-                      AppImages.sifrao,
-                      scale: 1.5,
+                      AppImages.logo,
+                      scale: 25,
                     )),
                 accountName: Text(_listname[0]["user"]),
                 accountEmail: Text('Vamos investir!')),
@@ -347,7 +348,7 @@ class _HomeState extends State<Home> {
               subtitle: Text('Edite seu nome ou apelido'),
               onTap: () {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => LoginPage(acesso: 1,)));
+                    MaterialPageRoute(builder: (context) => LoginPage()));
               },
             ),
             ListTile(
@@ -360,8 +361,6 @@ class _HomeState extends State<Home> {
                     _iforText = "Para mudar as porcentagens das metas remova os gastos!";
                   });
                 }else{
-                  print(_mes[0][DateTime.now().month]);
-                  print(mes);
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -375,10 +374,6 @@ class _HomeState extends State<Home> {
               subtitle: Text('Finalizar sessão'),
               onTap: () {
                 SystemNavigator.pop();
-
-                // Navigator.pushReplacement(
-                //     context, MaterialPageRoute(builder: (context) => PercentualWidget())
-                // );
               },
             ),
           ],

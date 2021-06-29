@@ -44,8 +44,10 @@ class _SelectionPageState extends State<SelectionPage> {
           newfinance["receita valor"] = _valorController.text;
           final ano = DateTime.now().year;
           final mes = DateTime.now().month;
+          final dia = DateTime.now().day;
           newfinance["ano"] = ano.toString();
           newfinance["mes"] = mes.toString();
+          newfinance["dia"] = dia.toString();
         }
         // Navegação: Volta para a HOMEPAGE
         Navigator.pop(context, newfinance);
