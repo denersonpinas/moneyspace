@@ -392,8 +392,8 @@ class _HomeState extends State<Home> {
                 .then((date) =>
             {
               setState(() {
-                ano = date?.year;
-                final mesN = date?.month;
+                ano = date?.year != null ? date?.year : DateTime.now().year;
+                final mesN = date?.month != null ? date?.month : DateTime.now().month;
                 mes = _mes[0][mesN];
                 _dateTime = "$mes / $ano";
               })
