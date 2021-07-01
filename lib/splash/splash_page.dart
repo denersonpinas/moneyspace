@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:moneyspace/admin/login_page.dart';
-import 'package:moneyspace/core/app_gradients.dart';
 import 'package:moneyspace/core/app_images.dart';
-import 'package:moneyspace/shared/database/database_page.dart';
 
 class SplashPage extends StatelessWidget {
   

@@ -30,8 +30,11 @@ class _SelectionPageState extends State<SelectionPage> {
           newfinance["gastos valor"] = _valorController.text;
           final ano = DateTime.now().year;
           final mes = DateTime.now().month;
+          final dia = DateTime.now().day;
           newfinance["ano"] = ano.toString();
           newfinance["mes"] = mes.toString();
+          newfinance["dia"] = dia.toString();
+          
           if(dropdownValue == "Gastos Essenciais") {
             newfinance["tipo de gastos"] = 1;
           } else if(dropdownValue == "Gastos Não Essenciais") {
