@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void initState() {    
-    readData("nomec").then((dynamic data) {
+    readData("nomed").then((dynamic data) {
       _listname = json.decode(data);
       _nameController.text = _listname[0]["user"];
     });
@@ -97,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                               label: "Entrar", 
                               onTap: (){
                                 _listname[0]["user"] = _nameController.text != "" ? _nameController.text : "user";                    
-                                saveData(_listname, "nomec");
+                                saveData(_listname, "nomed");
                                 Navigator.pushReplacement(
                                   context, MaterialPageRoute(builder: (context) => Home())
                                 );

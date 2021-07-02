@@ -87,8 +87,8 @@ class _HomeState extends State<Home> {
     try {
       if (countList == 0) {
         return 0;
-      } else if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"] != null && _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"] != null) {
-        countMesList = _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"].length;
+      } else if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"] != null && _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"] != null) {
+        countMesList = _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].length;
         return countMesList;
       } else {
         return 0;
@@ -119,44 +119,17 @@ class _HomeState extends State<Home> {
 
       for(contMes = 0; contMes < 12; contMes++){
         
-        for(l = 0; l < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][1 + contMes]].length;l++){
+        for(l = 0; l < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]].length;l++){
 
-          if (_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][1 + contMes]][l]["gastos valor"] != null) {
+          if (_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["gastos valor"] != null) {
             print(_mes[0][1 + contMes]);
-            calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][1 + contMes]][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][1 + contMes]][l]["gastos valor"] : 0.0) + calcgastos;
+            calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["gastos valor"] : 0.0) + calcgastos;
             print(calcgastos);
           }
         }
       }
     }
 
-    // for(contAno = 0; contAno < _listfinance[0]["carteira"].length;contAno++){
-
-    //   for(contMes = 0; contMes < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"].length; contMes++){
-
-    //     for (l = 0; l < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]].length;l++) {
-
-    //       if (_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]][l]["gastos valor"] != null) {
-    //         calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]][l]["gastos valor"] : 0.0) + calcgastos;
-    //       }
-    //     }
-    //   }
-    // }
-
-    // for(contAno = 0; contAno < _listfinance[0]["carteira"].length;contAno++){
-
-    //   for(contMes = 0; contMes < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"].length; contMes++){
-
-    //     for (l = 0; l < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]].length;l++) {
-
-    //       if (_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]][l]["gastos valor"] != null) {
-            
-    //         calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]][l]["gastos valor"] : "0") + calcgastos;
-    //         print("1 $calcgastos");
-    //       }
-    //     }
-    //   }
-    // } 
     return calcgastos;
   }
 
@@ -169,29 +142,17 @@ class _HomeState extends State<Home> {
 
       for(contMes = 0; contMes < 12; contMes++){
         
-        for(l = 0; l < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][1 + contMes]].length;l++){
+        for(l = 0; l < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]].length;l++){
 
-          if (_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][1 + contMes]][l]["receita valor"] != null) {
+          if (_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["receita valor"] != null) {
             print(_mes[0][1 + contMes]);
-            calcsaldoReceita = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][1 + contMes]][l]["receita valor"] != null ? _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][1 + contMes]][l]["receita valor"] : 0.0) + calcsaldoReceita;
+            calcsaldoReceita = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["receita valor"] != null ? _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["receita valor"] : 0.0) + calcsaldoReceita;
             print(calcsaldoReceita);
           }
         }
       }
     }
-
-    // for(contAno = 0; contAno < _listfinance[0]["carteira"].length;contAno++){
-
-    //   for(contMes = 0; contMes < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"].length; contMes++){
-
-    //     for (l = 0; l < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]].length;l++) {
-
-    //       if (_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]][l]["receita valor"] != null) {
-    //         calcsaldoReceita = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]][l]["receita valor"] != null ? _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][0][_mes[0][6 + contMes]][l]["receita valor"] : 0.0) + calcsaldoReceita;
-    //       }
-    //     }
-    //   }
-    // }    
+    
     return calcsaldoReceita;
   }
 
@@ -206,7 +167,7 @@ class _HomeState extends State<Home> {
         if(_listfinance[0]["carteira"][_setIndiceAno()]["$ano"] != null){
 
           if (recContact["receita valor"] != null) { 
-            _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"].add(recContact);            
+            _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);            
             setState(() {
               _iforText = "";
             });
@@ -219,7 +180,7 @@ class _HomeState extends State<Home> {
             // Se o 'percente' for menor que o valor imputado ele não deixa salvar
             // Se false ele salva 
             if (percent >= gastoTot) {
-              _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"].add(recContact);
+              _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);
 
               setState(() {
                 _iforText = "";
@@ -232,8 +193,12 @@ class _HomeState extends State<Home> {
           }
 
         } else {
+          setState(() {
+            _listfinance[0]["carteira"].add({"$ano" : {"Janeiro" : [], "Fevereiro" : [], "Março" : [], "Abril" : [], "Maio" : [], "Junho" : [], "Julho" : [], "Agosto" : [], "Setembro" : [], "Outubro" : [], "Novembro" : [], "Dezembro" : []}});
+          });
+          
           if (recContact["receita valor"] != null) { 
-            _listfinance[0]["carteira"][1]["$ano"][0]["$mes"].add(recContact);        
+            _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);        
             setState(() {
               _iforText = "";
             });
@@ -246,7 +211,7 @@ class _HomeState extends State<Home> {
             // Se o 'percente' for menor que o valor imputado ele não deixa salvar
             // Se false ele salva 
             if (percent >= gastoTot) {
-              _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"].add(recContact);
+              _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);
 
               setState(() {
                 _iforText = "";
@@ -259,10 +224,13 @@ class _HomeState extends State<Home> {
           }
         }
       } else {
-
+        setState(() {
+          _listfinance[0]["carteira"].add({"$ano" : {"Janeiro" : [], "Fevereiro" : [], "Março" : [], "Abril" : [], "Maio" : [], "Junho" : [], "Julho" : [], "Agosto" : [], "Setembro" : [], "Outubro" : [], "Novembro" : [], "Dezembro" : []}});
+        });        
         if (recContact["receita valor"] != null) {
 
-          _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"].add(recContact);            
+          _listfinance[0]["carteira"][0]["$ano"]["$mes"].add(recContact);     
+
           setState(() {
             _iforText = "";
           });
@@ -275,7 +243,7 @@ class _HomeState extends State<Home> {
           // Se o 'percente' for menor que o valor imputado ele não deixa salvar
           // Se false ele salva 
           if (percent >= gastoTot) {
-            _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"].add(recContact);
+            _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);
 
             setState(() {
               _iforText = "";
@@ -287,7 +255,7 @@ class _HomeState extends State<Home> {
           }
         }
       }
-      saveData(_listfinance[0]["carteira"], "test26");
+      saveData(_listfinance[0]["carteira"], "testdb1");
     });      
   }
 
@@ -316,16 +284,16 @@ class _HomeState extends State<Home> {
       double calcgastostipo = 0;
       double result = 0;
 
-      if(_listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"] != null){
-        for (l = 0; l < _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"].length; l++) {
-          if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][l]["gastos valor"] !=
+      if(_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"] != null){
+        for (l = 0; l < _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].length; l++) {
+          if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] !=
               null &&
-              _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][l]["tipo de gastos"] ==
+              _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["tipo de gastos"] ==
                   tipo) {
             calcgastostipo = UtilBrasilFields.converterMoedaParaDouble(
-                _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][l]["gastos valor"] !=
+                _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] !=
                     null
-                    ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][l]["gastos valor"]
+                    ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"]
                     : "0") + calcgastostipo;
           }
         }
@@ -355,9 +323,9 @@ class _HomeState extends State<Home> {
   _setGastoTotal(tipo){
     double calcgastostipo = 0;
 
-    for (l = 0; l < _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"].length;l++) {
-      if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][l]["gastos valor"] != null && _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][l]["tipo de gastos"] == tipo) {
-        calcgastostipo = UtilBrasilFields.converterMoedaParaDouble( _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][l]["gastos valor"]: "0") + calcgastostipo;
+    for (l = 0; l < _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].length;l++) {
+      if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] != null && _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["tipo de gastos"] == tipo) {
+        calcgastostipo = UtilBrasilFields.converterMoedaParaDouble( _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"]: "0") + calcgastostipo;
       }
     }
     return calcgastostipo;
@@ -366,12 +334,12 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    readData("test26").then((dynamic data) {
+    readData("testdb1").then((dynamic data) {
       setState(() {
         _listfinance[0]["carteira"] = json.decode(data);
       });
     });
-    readData("nomec").then((dynamic data) {
+    readData("nomed").then((dynamic data) {
       setState(() {
         _listname = json.decode(data);
       });
@@ -572,18 +540,15 @@ class _HomeState extends State<Home> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"]
+                                  _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"]
                                   [index]["gastos descrição"] !=
                                       null
-                                      ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]
-                                  ["$mes"][index]["gastos descrição"]
+                                      ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]["gastos descrição"]
                                       .toString()
-                                      : _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]
-                                  ["$mes"][index]
+                                      : _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]
                                   ["receita descrição"] !=
                                       null
-                                      ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]
-                                  [0]["$mes"][index]
+                                      ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]
                                   ["receita descrição"]
                                       .toString()
                                       : "",
@@ -593,17 +558,14 @@ class _HomeState extends State<Home> {
                                       color: Colors.white),
                                 ),
                                 Text(
-                                  _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"]
+                                  _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"]
                                   [index]["gastos data"] !=
                                       null
-                                      ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]
-                                  ["$mes"][index]["gastos data"]
+                                      ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]["gastos data"]
                                       .toString()
-                                      : _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]
-                                  ["$mes"][index]["receita data"] !=
+                                      : _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]["receita data"] !=
                                       null
-                                      ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]
-                                  [0]["$mes"][index]["receita data"]
+                                      ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]["receita data"]
                                       .toString()
                                       : "",
                                   style:
@@ -615,17 +577,16 @@ class _HomeState extends State<Home> {
                         ])),
                     Container(
                       child: Text(
-                        _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][index]
+                        _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]
                         ["gastos valor"] !=
                             null
-                            ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"]
+                            ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"]
                         [index]["gastos valor"]
                             .toString()
-                            : _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"]
+                            : _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"]
                         [index]["receita valor"] !=
                             null
-                            ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]
-                        ["$mes"][index]["receita valor"]
+                            ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]["receita valor"]
                             .toString()
                             : "",
                         style: TextStyle(fontSize: 22, color: Colors.white),
@@ -636,7 +597,7 @@ class _HomeState extends State<Home> {
       ),
       onDismissed: (direction) {
         setState(() {
-          _lastRemoved = Map.from(_listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][index]);
+          _lastRemoved = Map.from(_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]);
           _lastRemovedPos = index;          
           if(_lastRemoved["receita valor"] != null) {
             final rec =  _setSaldoReceita();
@@ -648,9 +609,9 @@ class _HomeState extends State<Home> {
               setState(() {
                 _iforText = "";
               });
-               _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"].removeAt(index);
+               _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].removeAt(index);
 
-                saveData(_listfinance[0]["carteira"], "test26");
+                saveData(_listfinance[0]["carteira"], "testdb1");
 
                 final snack = SnackBar(
                   content: Text("Aplicação removida!"),
@@ -658,9 +619,9 @@ class _HomeState extends State<Home> {
                     label: "Desfazer",
                     onPressed: () {
                       setState(() {
-                        _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"]
+                        _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"]
                             .insert(_lastRemovedPos, _lastRemoved);
-                        saveData(_listfinance[0]["carteira"], "test26");
+                        saveData(_listfinance[0]["carteira"], "testdb1");
                       });
                     },
                   ),
@@ -678,9 +639,9 @@ class _HomeState extends State<Home> {
               _iforText = "";
             });
 
-            _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"].removeAt(index);
+            _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].removeAt(index);
 
-            saveData(_listfinance[0]["carteira"], "test26");
+            saveData(_listfinance[0]["carteira"], "testdb1");
 
             final snack = SnackBar(
               content: Text("Aplicação removida!"),
@@ -688,9 +649,9 @@ class _HomeState extends State<Home> {
                 label: "Desfazer",
                 onPressed: () {
                   setState(() {
-                    _listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"]
+                    _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"]
                         .insert(_lastRemovedPos, _lastRemoved);
-                    saveData(_listfinance[0]["carteira"], "test26");
+                    saveData(_listfinance[0]["carteira"], "testdb1");
                   });
                 },
               ),
@@ -717,19 +678,19 @@ class _HomeState extends State<Home> {
   }
 
   Image selectImage(int index) {
-    if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][index]
+    if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]
     ["receita descrição"] !=
         null) {
       return Image.asset(AppImages.arrow);
-    } else if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][index]
+    } else if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]
     ["tipo de gastos"] ==
         1) {
       return Image.asset(AppImages.red);
-    } else if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][index]
+    } else if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]
     ["tipo de gastos"] ==
         2) {
       return Image.asset(AppImages.yellow);
-    } else if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"][0]["$mes"][index]
+    } else if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][index]
     ["tipo de gastos"] ==
         3) {
       return Image.asset(AppImages.green);
