@@ -8,22 +8,112 @@ import 'package:flutter/material.dart';
 
 class PercentualWidget extends StatefulWidget {
 
+  final mes;
+
+  const PercentualWidget({
+    Key? key,
+    required this.mes
+  }) : super(key: key);
+
   @override
   _PercentualWidgetState createState() => _PercentualWidgetState();
 }
 
 class _PercentualWidgetState extends State<PercentualWidget> {
-
+  
   final _typeOneController = TextEditingController();
   final _typeTwoController = TextEditingController();
   final _typeThreeController = TextEditingController();
 
   List _listmetas = [
     {
-      "gastos essenciais" : 0.6,
-      "gastos não essenciais" : 0.3,
-      "investimentos" : 0.1
-    }
+      "metas mes" : {
+        "Janeiro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Fevereiro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Março" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Abril" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Maio" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Junho" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Julho" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Agosto" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Setembro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Outubro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Novembro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Dezembro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ]
+      }
+    }    
   ];
   late String _inforText;
 
@@ -90,11 +180,11 @@ class _PercentualWidgetState extends State<PercentualWidget> {
                               final soma = int.parse(_typeOneController.text) + int.parse(_typeTwoController.text) + int.parse(_typeThreeController.text);    
                               if(soma == 100){
                                 if(int.parse(_typeOneController.text) > 0 && int.parse(_typeTwoController.text) > 0 && int.parse(_typeThreeController.text) > 0){
-                                  _listmetas[0]["gastos essenciais"] = (double.parse(_typeOneController.text) / 100);
-                                  _listmetas[0]["gastos não essenciais"] = (double.parse(_typeTwoController.text) / 100);
-                                  _listmetas[0]["investimentos"] = (double.parse(_typeThreeController.text) / 100); 
+                                  _listmetas[0]["metas mes"]["${widget.mes}"][0]["gastos essenciais"] = (double.parse(_typeOneController.text) / 100);
+                                  _listmetas[0]["metas mes"]["${widget.mes}"][0]["gastos não essenciais"] = (double.parse(_typeTwoController.text) / 100);
+                                  _listmetas[0]["metas mes"]["${widget.mes}"][0]["investimentos"] = (double.parse(_typeThreeController.text) / 100); 
                                   _inforText = "";
-                                  saveData(_listmetas[0], "metas");
+                                  saveData(_listmetas[0], "metas1");
 
                                   Navigator.push(
                                     context, MaterialPageRoute(

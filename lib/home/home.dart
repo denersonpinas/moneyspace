@@ -70,10 +70,93 @@ class _HomeState extends State<Home> {
   ];
   List _listmetas = [
     {
-      "gastos essenciais": 0.6,
-      "gastos não essenciais": 0.3,
-      "investimentos": 0.1
-    }
+      "metas mes" : {
+        "Janeiro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Fevereiro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Março" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Abril" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Maio" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Junho" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Julho" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Agosto" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Setembro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Outubro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Novembro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ], 
+        "Dezembro" : [
+          {
+            "gastos essenciais": 0.6,
+            "gastos não essenciais": 0.3,
+            "investimentos": 0.1
+          }
+        ]
+      }
+    }    
   ];
   late Map<String, dynamic> _lastRemoved;
   late int _lastRemovedPos;
@@ -104,9 +187,20 @@ class _HomeState extends State<Home> {
   }
 
   _setSaldo() {
+
+    double calcgastosatual = 0.0;
+
+    if(_listfinance[0]["carteira"].length > 0){
+
+      for (l = 0; l < _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].length;l++) {
+        if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] != null) {
+          calcgastosatual = UtilBrasilFields.converterMoedaParaDouble( _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"]: 0.0) + calcgastosatual;
+        }
+      }
+    }
+
     NumberFormat formatter = NumberFormat("0.00");
-    final resultado = _setSaldoReceita() - _setSaldoTotGastos();
-    print("$resultado = ${_setSaldoReceita()} - ${_setSaldoTotGastos()}");
+    final resultado = _setSaldoReceita() - calcgastosatual;
     return formatter.format(resultado);
   }
 
@@ -134,78 +228,119 @@ class _HomeState extends State<Home> {
   }
 
   _setSaldoReceita() {
-    double calcsaldoReceita = 0;
-    int contAno;
-    int contMes;
+    double calcgastospassado = 0.0;
+    double calcreceitaspassado = 0.0;
 
-    for(contAno = 0; contAno < _listfinance[0]["carteira"].length;contAno++){
+    double calcreceitasatual = 0.0;
 
-      for(contMes = 0; contMes < 12; contMes++){
-        
-        for(l = 0; l < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]].length;l++){
+    final mespassado = _mes[0][_convertMes[0]["$mes"] - 1];
 
-          if (_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["receita valor"] != null) {
-            print(_mes[0][1 + contMes]);
-            calcsaldoReceita = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["receita valor"] != null ? _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["receita valor"] : 0.0) + calcsaldoReceita;
-            print(calcsaldoReceita);
-          }
+    if(_listfinance[0]["carteira"].length > 0){
+      for (l = 0; l < _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mespassado"].length;l++) {
+
+        if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mespassado"][l]["gastos valor"] != null) {
+          
+          calcgastospassado = UtilBrasilFields.converterMoedaParaDouble( _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mespassado"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mespassado"][l]["gastos valor"]: 0.0) + calcgastospassado;
+        } else {
+
+          calcreceitaspassado = UtilBrasilFields.converterMoedaParaDouble( _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mespassado"][l]["receita valor"] != null ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mespassado"][l]["receita valor"]: 0.0) + calcgastospassado;
+          
+        }
+      }
+
+      for (l = 0; l < _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].length;l++) {
+        if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["receita valor"] != null) {
+          calcreceitasatual = UtilBrasilFields.converterMoedaParaDouble( _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["receita valor"] != null ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["receita valor"]: 0.0) + calcreceitasatual;
         }
       }
     }
+
+    final totpassado = calcreceitaspassado - calcgastospassado;
     
-    return calcsaldoReceita;
+    return totpassado + calcreceitasatual;
   }
 
   // Função adiciona 'Receitas' e 'Despesas' 
   // recebendo do selection_page pelo recContact e passando para o _listfinance
   _addList(recContact) {
-    print(_listfinance);
-    print("--------------");
     setState(() {
-      if(_listfinance[0]["carteira"].length > 0){
+      if("$mes" == _mes[0][int.parse(recContact["mes"])]){
+        if(_listfinance[0]["carteira"].length > 0){
 
-        if(_listfinance[0]["carteira"][_setIndiceAno()]["$ano"] != null){
+          if(_listfinance[0]["carteira"][_setIndiceAno()]["$ano"] != null){
 
-          if (recContact["receita valor"] != null) { 
-            _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);            
-            setState(() {
-              _iforText = "";
-            });
-
-          } else {
-            List convertList = [{1:"gastos essenciais", 2:"gastos não essenciais", 3:"investimentos"}];
-            double percent = _setSaldoReceita() * _listmetas[0][convertList[0][recContact["tipo de gastos"]]];
-            double gastoTot = _setGastoTotal(recContact["tipo de gastos"]) + UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"]);            
-            // IF: A variavel 'percent' recebe o valor maximo suportado pelo tipo do gasto
-            // Se o 'percente' for menor que o valor imputado ele não deixa salvar
-            // Se false ele salva 
-            if (percent >= gastoTot) {
-              _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);
-
+            if (recContact["receita valor"] != null) {
+              _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);            
               setState(() {
                 _iforText = "";
-              }); 
-            } else {           
-              setState(() {
-                _iforText = "Aumente sua receita, sinal lotado!";
               });
+
+            } else {
+              List convertList = [{1:"gastos essenciais", 2:"gastos não essenciais", 3:"investimentos"}];
+              double percent = _setSaldoReceita() * _listmetas[0]["metas mes"]["$mes"][0][convertList[0][recContact["tipo de gastos"]]];
+              double gastoTot = _setGastoTotal(recContact["tipo de gastos"]) + UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"]);            
+              // IF: A variavel 'percent' recebe o valor maximo suportado pelo tipo do gasto
+              // Se o 'percente' for menor que o valor imputado ele não deixa salvar
+              // Se false ele salva 
+              if (percent >= gastoTot) {
+                _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);
+
+                setState(() {
+                  _iforText = "";
+                }); 
+              } else {           
+                setState(() {
+                  _iforText = "Aumente sua receita, sinal lotado!";
+                });
+              }
+            }
+
+          } else {
+            setState(() {
+              _listfinance[0]["carteira"].add({"$ano" : {"Janeiro" : [], "Fevereiro" : [], "Março" : [], "Abril" : [], "Maio" : [], "Junho" : [], "Julho" : [], "Agosto" : [], "Setembro" : [], "Outubro" : [], "Novembro" : [], "Dezembro" : []}});
+            });
+            
+            if (recContact["receita valor"] != null) { 
+              _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);        
+              setState(() {
+                _iforText = "";
+              });
+
+            } else {
+              List convertList = [{1:"gastos essenciais", 2:"gastos não essenciais", 3:"investimentos"}];
+              double percent = _setSaldoReceita() * _listmetas[0]["metas mes"]["$mes"][convertList[0][recContact["tipo de gastos"]]];
+              double gastoTot = _setGastoTotal(recContact["tipo de gastos"]) + UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"]);            
+              // IF: A variavel 'percent' recebe o valor maximo suportado pelo tipo do gasto
+              // Se o 'percente' for menor que o valor imputado ele não deixa salvar
+              // Se false ele salva 
+              if (percent >= gastoTot) {
+                _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);
+
+                setState(() {
+                  _iforText = "";
+                }); 
+              } else {           
+                setState(() {
+                  _iforText = "Aumente sua receita, sinal lotado!";
+                });
+              }
             }
           }
-
         } else {
           setState(() {
             _listfinance[0]["carteira"].add({"$ano" : {"Janeiro" : [], "Fevereiro" : [], "Março" : [], "Abril" : [], "Maio" : [], "Junho" : [], "Julho" : [], "Agosto" : [], "Setembro" : [], "Outubro" : [], "Novembro" : [], "Dezembro" : []}});
-          });
-          
-          if (recContact["receita valor"] != null) { 
-            _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);        
+          });        
+          if (recContact["receita valor"] != null) {
+
+            _listfinance[0]["carteira"][0]["$ano"]["$mes"].add(recContact);     
+
             setState(() {
               _iforText = "";
             });
 
           } else {
             List convertList = [{1:"gastos essenciais", 2:"gastos não essenciais", 3:"investimentos"}];
-            double percent = _setSaldoReceita() * _listmetas[0][convertList[0][recContact["tipo de gastos"]]];
+            double percent = _setSaldoReceita() * _listmetas[0]["metas mes"]["$mes"][convertList[0][recContact["tipo de gastos"]]];
             double gastoTot = _setGastoTotal(recContact["tipo de gastos"]) + UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"]);            
             // IF: A variavel 'percent' recebe o valor maximo suportado pelo tipo do gasto
             // Se o 'percente' for menor que o valor imputado ele não deixa salvar
@@ -223,39 +358,12 @@ class _HomeState extends State<Home> {
             }
           }
         }
+        saveData(_listfinance[0]["carteira"], "testdb1");
       } else {
         setState(() {
-          _listfinance[0]["carteira"].add({"$ano" : {"Janeiro" : [], "Fevereiro" : [], "Março" : [], "Abril" : [], "Maio" : [], "Junho" : [], "Julho" : [], "Agosto" : [], "Setembro" : [], "Outubro" : [], "Novembro" : [], "Dezembro" : []}});
-        });        
-        if (recContact["receita valor"] != null) {
-
-          _listfinance[0]["carteira"][0]["$ano"]["$mes"].add(recContact);     
-
-          setState(() {
-            _iforText = "";
-          });
-
-        } else {
-          List convertList = [{1:"gastos essenciais", 2:"gastos não essenciais", 3:"investimentos"}];
-          double percent = _setSaldoReceita() * _listmetas[0][convertList[0][recContact["tipo de gastos"]]];
-          double gastoTot = _setGastoTotal(recContact["tipo de gastos"]) + UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"]);            
-          // IF: A variavel 'percent' recebe o valor maximo suportado pelo tipo do gasto
-          // Se o 'percente' for menor que o valor imputado ele não deixa salvar
-          // Se false ele salva 
-          if (percent >= gastoTot) {
-            _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].add(recContact);
-
-            setState(() {
-              _iforText = "";
-            }); 
-          } else {           
-            setState(() {
-              _iforText = "Aumente sua receita, sinal lotado!";
-            });
-          }
-        }
-      }
-      saveData(_listfinance[0]["carteira"], "testdb1");
+          _iforText = "Ação não realizada, volte para o mês atual";
+        });
+      }      
     });      
   }
 
@@ -301,13 +409,13 @@ class _HomeState extends State<Home> {
         setState(() {
           if (tipo == 1) {
             result = calcgastostipo /
-                (_setSaldoReceita() * _listmetas[0]["gastos essenciais"]);
+                (_setSaldoReceita() * _listmetas[0]["metas mes"]["$mes"][0]["gastos essenciais"]);
           } else if (tipo == 2) {
             result = calcgastostipo /
-                (_setSaldoReceita() * _listmetas[0]["gastos não essenciais"]);
+                (_setSaldoReceita() * _listmetas[0]["metas mes"]["$mes"][0]["gastos não essenciais"]);
           } else {
             result = calcgastostipo /
-                (_setSaldoReceita() * _listmetas[0]["investimentos"]);
+                (_setSaldoReceita() * _listmetas[0]["metas mes"]["$mes"][0]["investimentos"]);
           }
           percent = double.parse(result.toStringAsPrecision(2));
         });
@@ -325,9 +433,10 @@ class _HomeState extends State<Home> {
 
     for (l = 0; l < _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].length;l++) {
       if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] != null && _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["tipo de gastos"] == tipo) {
-        calcgastostipo = UtilBrasilFields.converterMoedaParaDouble( _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"]: "0") + calcgastostipo;
+        calcgastostipo = UtilBrasilFields.converterMoedaParaDouble( _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"]: 0.0) + calcgastostipo;
       }
     }
+
     return calcgastostipo;
   }
 
@@ -344,7 +453,7 @@ class _HomeState extends State<Home> {
         _listname = json.decode(data);
       });
     });
-    readData("metas").then((dynamic data) {
+    readData("metas1").then((dynamic data) {
       setState(() {
         _listmetas[0] = json.decode(data);
       });
@@ -390,7 +499,7 @@ class _HomeState extends State<Home> {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PercentualWidget()));
+                          builder: (context) => PercentualWidget(mes: mes,)));
                 }
               },
             ),
@@ -484,22 +593,22 @@ class _HomeState extends State<Home> {
                     child: ChartWidget(
                       percent: _setPercent(1),
                       varPercent:
-                      (_listmetas[0]["gastos essenciais"] * 100).ceil(),
+                      (_listmetas[0]["metas mes"]["$mes"][0]["gastos essenciais"] * 100).ceil(),
                       label: "vermelho",
                     )),
-                Expanded(
+                    Expanded(
                     flex: 2,
                     child: ChartWidget(
                       percent: _setPercent(2),
                       varPercent:
-                      (_listmetas[0]["gastos não essenciais"] * 100).ceil(),
+                      (_listmetas[0]["metas mes"]["$mes"][0]["gastos não essenciais"] * 100).ceil(),
                       label: "amarelo",
                     )),
                 Expanded(
                     flex: 2,
                     child: ChartWidget(
                       percent: _setPercent(3),
-                      varPercent: (_listmetas[0]["investimentos"] * 100).ceil(),
+                      varPercent: (_listmetas[0]["metas mes"]["$mes"][0]["investimentos"] * 100).ceil(),
                       label: "verde",
                     )),
               ],
