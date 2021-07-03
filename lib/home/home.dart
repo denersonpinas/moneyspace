@@ -206,23 +206,35 @@ class _HomeState extends State<Home> {
 
   _setSaldoTotGastos() {  
     double calcgastos = 0;
-    int contAno;
-    int contMes;
+    // int contAno;
+    // int contMes;
 
-    for(contAno = 0; contAno < _listfinance[0]["carteira"].length;contAno++){
+    if(_listfinance[0]["carteira"].length > 0){
+      for(l = 0; l < _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"].length;l++){
 
-      for(contMes = 0; contMes < 12; contMes++){
-        
-        for(l = 0; l < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]].length;l++){
+        if (_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] != null) {
 
-          if (_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["gastos valor"] != null) {
-            print(_mes[0][1 + contMes]);
-            calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["gastos valor"] : 0.0) + calcgastos;
-            print(calcgastos);
-          }
+          calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] != null ? _listfinance[0]["carteira"][_setIndiceAno()]["$ano"]["$mes"][l]["gastos valor"] : 0.0) + calcgastos;
+          
         }
       }
     }
+    
+
+    // for(contAno = 0; contAno < _listfinance[0]["carteira"].length;contAno++){
+
+    //   for(contMes = 0; contMes < 12; contMes++){
+        
+    //     for(l = 0; l < _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]].length;l++){
+
+    //       if (_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["gastos valor"] != null) {
+    //         print(_mes[0][1 + contMes]);
+    //         calcgastos = UtilBrasilFields.converterMoedaParaDouble(_listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["gastos valor"] != null ? _listfinance[0]["carteira"][0 + contAno]["${2021 + contAno}"][_mes[0][1 + contMes]][l]["gastos valor"] : 0.0) + calcgastos;
+    //         print(calcgastos);
+    //       }
+    //     }
+    //   }
+    // }
 
     return calcgastos;
   }
@@ -491,7 +503,7 @@ class _HomeState extends State<Home> {
               title: Text('Editar Metas'),
               subtitle: Text('Definir % das metas'),
               onTap: () {
-                if(_setSaldoTotGastos() > 0 || mes != _mes[0][DateTime.now().month]){
+                if(_setSaldoTotGastos() > 0  || mes != _mes[0][DateTime.now().month]){
                   setState(() {
                     _iforText = "Para mudar as porcentagens das metas remova os gastos!";
                   });
