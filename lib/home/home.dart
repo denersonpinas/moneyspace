@@ -241,27 +241,31 @@ class _HomeState extends State<Home> {
           for (l = 0; l < _listfinance["carteira"]["$initAno"][_mes[0][initMes]].length;l++) {
             if (_listfinance["carteira"]["$initAno"][_mes[0][initMes]][l]["gastos valor"] != null) {
               calcgastospassado = UtilBrasilFields.converterMoedaParaDouble( _listfinance["carteira"]["$initAno"][_mes[0][initMes]][l]["gastos valor"] != null ? _listfinance["carteira"]["$initAno"][_mes[0][initMes]][l]["gastos valor"]: 0.0) + calcgastospassado;
+              //print("Esse é o gasto do Mês $initMes do Ano $initAno:  $calcgastospassado");
             } else {
               calcreceitaspassado = UtilBrasilFields.converterMoedaParaDouble( _listfinance["carteira"]["$initAno"][_mes[0][initMes]][l]["receita valor"] != null ? _listfinance["carteira"]["$initAno"][_mes[0][initMes]][l]["receita valor"]: 0.0) + calcreceitaspassado; 
+              //print("Esse é o receita do Mês $initMes do Ano $initAno:  $calcreceitaspassado");
             }
           }
-        }  
+        }
+        //print("Estamos no ano $initAno no mês $initMes");
+        //print("Meta é $initMes == $menosMes");  
 
         verificMes = false;
         verificAno = false;
-        if(initMes != 12){
-          initMes++;          
-        } else {
-          initMes = 1;
-          initAno = initAno + 1;
-        }
-
         if (initMes == menosMes) {
           verificMes = true;
         } 
         if (initAno == ano) {
           verificAno = true;
         } 
+        
+        if(initMes != 12){
+          initMes++;          
+        } else {
+          initMes = 1;
+          initAno = initAno + 1;
+        }        
       }
 
     }
@@ -292,7 +296,7 @@ class _HomeState extends State<Home> {
       if("$mes" == _mes[0][int.parse(recContact["mes"])]){
         if(_listfinance["carteira"].length > 0){
           if(_listfinance["carteira"]["$ano"] != null){
-
+            print(_listfinance["carteira"]);
             if (recContact["receita valor"] != null) {
               _listfinance["carteira"]["$ano"]["$mes"].add(recContact);            
               setState(() {
@@ -322,8 +326,8 @@ class _HomeState extends State<Home> {
           } else {
             setState(() {
              _listfinance["carteira"]["${recContact["ano"]}"] = {"Janeiro" : [], "Fevereiro" : [], "Março" : [], "Abril" : [], "Maio" : [], "Junho" : [], "Julho" : [], "Agosto" : [], "Setembro" : [], "Outubro" : [], "Novembro" : [], "Dezembro" : []};
-            });            
-            
+            });    
+
             if (recContact["receita valor"] != null) { 
               _listfinance["carteira"]["$ano"]["$mes"].add(recContact);        
               setState(() {
@@ -354,6 +358,7 @@ class _HomeState extends State<Home> {
           setState(() {
             _listfinance["carteira"]["${recContact["ano"]}"] = {"Janeiro" : [], "Fevereiro" : [], "Março" : [], "Abril" : [], "Maio" : [], "Junho" : [], "Julho" : [], "Agosto" : [], "Setembro" : [], "Outubro" : [], "Novembro" : [], "Dezembro" : []};
           });      
+          print(_listfinance["carteira"]);
           if (recContact["receita valor"] != null) {
 
             _listfinance["carteira"]["$ano"]["$mes"].add(recContact);     
@@ -696,15 +701,19 @@ class _HomeState extends State<Home> {
         setState(() {
           _lastRemoved = Map.from(_listfinance["carteira"]["$ano"]["$mes"][index]);
           _lastRemovedPos = index;
-          final verific = ("$ano" == _lastRemoved["ano"]) && ("$mes" == _mes[0][int.parse(_lastRemoved["mes"])]);
+          dynamic anoOrigi = DateTime.now().year;
+          dynamic mesOrigi = DateTime.now().month;
 
-          if(_lastRemoved["receita valor"] != null && verific == true) {
+          final verific = ("$anoOrigi" == "$ano") && ("$mesOrigi" == _convertMes[0][mes].toString());
+          print(verific);
+          
+          if(_lastRemoved["receita valor"] != null) {
             final rec =  _setSaldoReceita();
             final receitaTotal =  (rec) - (UtilBrasilFields.converterMoedaParaDouble(_lastRemoved["receita valor"]) != null ? UtilBrasilFields.converterMoedaParaDouble(_lastRemoved["receita valor"]) : UtilBrasilFields.converterMoedaParaDouble(_lastRemoved["gastos valor"]) != null ? UtilBrasilFields.converterMoedaParaDouble(_lastRemoved["gastos valor"]) : 0);
             final resp = (receitaTotal >= ((rec) * (_percentualpre())));         
             final result =  receitaTotal - _setSaldoTotGastos();
             
-            if(result >= 0 && resp == true){
+            if(result >= 0 && resp == true  && verific == true){
               setState(() {
                 _iforText = "";
               });
@@ -733,7 +742,7 @@ class _HomeState extends State<Home> {
                 _iforText = "Ação não realizada, por favor exclua um gasto antes";
               });
             }
-          } else {
+          } else if(verific == true){
             setState(() {
               _iforText = "";
             });
@@ -758,6 +767,10 @@ class _HomeState extends State<Home> {
             );
 
             ScaffoldMessenger.of(context).showSnackBar(snack);                     
+          } else {
+            setState(() {
+              _iforText = "Por favor, volte para o mês atual.";
+            });
           }
         });
       },
