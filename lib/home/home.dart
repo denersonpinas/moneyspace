@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:moneyspace/admin/login_page.dart';
 import 'package:moneyspace/core/app_text_styles.dart';
 import 'package:moneyspace/home/widget/chart/chart_widget.dart';
+import 'package:moneyspace/home/widget/print/alert_widget.dart';
 import 'package:moneyspace/metas/percentual_widget.dart';
 import 'package:moneyspace/shared/database/database_page.dart';
 import 'package:moneyspace/core/app_colors.dart';
@@ -24,6 +25,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   
   String _iforText = "";
+  String _typeIforText = "";
   late double percent;
 
   String _dateTime = "";
@@ -301,6 +303,7 @@ class _HomeState extends State<Home> {
               _listfinance["carteira"]["$ano"]["$mes"].add(recContact);            
               setState(() {
                 _iforText = "";
+                _typeIforText = "";
               });
 
             } else {
@@ -315,10 +318,12 @@ class _HomeState extends State<Home> {
 
                 setState(() {
                   _iforText = "";
+                  _typeIforText  = "";
                 }); 
               } else {           
                 setState(() {
                   _iforText = "Aumente sua receita, sinal lotado!";
+                  _typeIforText = "!ALERT!\n";
                 });
               }
             }
@@ -332,6 +337,7 @@ class _HomeState extends State<Home> {
               _listfinance["carteira"]["$ano"]["$mes"].add(recContact);        
               setState(() {
                 _iforText = "";
+                _typeIforText = "";
               });
 
             } else {
@@ -346,10 +352,12 @@ class _HomeState extends State<Home> {
 
                 setState(() {
                   _iforText = "";
+                  _typeIforText = "";
                 }); 
               } else {           
                 setState(() {
                   _iforText = "Aumente sua receita, sinal lotado!";
+                  _typeIforText = "!ALERT!\n";
                 });
               }
             }
@@ -364,10 +372,12 @@ class _HomeState extends State<Home> {
             _listfinance["carteira"]["$ano"]["$mes"].add(recContact);     
             setState(() {
               _iforText = "";
+              _typeIforText = "";
             });
           } else {
             setState(() {
               _iforText = "Por favor, insira uma receita!";
+              _typeIforText = "!ALERT!\n";
             });
           }
         }
@@ -375,6 +385,7 @@ class _HomeState extends State<Home> {
       } else {
        setState(() {
          _iforText = "Ação não realizada, volte para o mês atual";
+         _typeIforText = "!ALERT!\n";
        });
       }      
     });      
@@ -507,6 +518,7 @@ class _HomeState extends State<Home> {
                 if(_setSaldoTotGastos() > 0  || mes != _mes[0][DateTime.now().month]){
                   setState(() {
                     _iforText = "Para mudar as porcentagens das metas remova os gastos!";
+                    _typeIforText = "!ALERT!\n";
                   });
                 }else{
                   Navigator.pushReplacement(
@@ -587,9 +599,12 @@ class _HomeState extends State<Home> {
           SizedBox(
             height: 10,
           ),
-          Text(
-            _iforText,
-            style: AppTextStyles.bodyBold,
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.lightGrey,
+              borderRadius: BorderRadius.circular(7)
+            ),
+            child: AlertWidget(inforText: _iforText, typeInforText: _typeIforText,)
           ),
           SizedBox(
             height: 10,
@@ -672,11 +687,7 @@ class _HomeState extends State<Home> {
                                       color: Colors.white),
                                 ),
                                 Text(
-                                  _listfinance["carteira"]["$ano"]["$mes"][index]["gastos data"] != null
-                                    ? _listfinance["carteira"]["$ano"]["$mes"][index]["gastos data"].toString()
-                                    : _listfinance["carteira"]["$ano"]["$mes"][index]["receita data"] != null
-                                    ? _listfinance["carteira"]["$ano"]["$mes"][index]["receita data"].toString()
-                                    : "",
+                                  _listfinance["carteira"]["$ano"]["$mes"][index]["dia"] + "/"+ _listfinance["carteira"]["$ano"]["$mes"][index]["mes"] + "/" + _listfinance["carteira"]["$ano"]["$mes"][index]["ano"],
                                   style:
                                   TextStyle(fontSize: 14, color: Colors.white),
                                 ),
@@ -716,6 +727,7 @@ class _HomeState extends State<Home> {
             if(result >= 0 && resp == true  && verific == true){
               setState(() {
                 _iforText = "";
+                _typeIforText = "";
               });
                _listfinance["carteira"]["$ano"]["$mes"].removeAt(index);
 
@@ -740,11 +752,13 @@ class _HomeState extends State<Home> {
             } else {
               setState(() {
                 _iforText = "Ação não realizada, por favor exclua um gasto antes";
+                _typeIforText = "!ALERT!\n";
               });
             }
           } else if(verific == true){
             setState(() {
               _iforText = "";
+              _typeIforText = "";
             });
 
             _listfinance["carteira"]["$ano"]["$mes"].removeAt(index);
@@ -770,6 +784,7 @@ class _HomeState extends State<Home> {
           } else {
             setState(() {
               _iforText = "Por favor, volte para o mês atual.";
+              _typeIforText = "!ALERT!\n";
             });
           }
         });
