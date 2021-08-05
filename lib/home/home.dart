@@ -312,14 +312,22 @@ class _HomeState extends State<Home> {
               double gastoTot = _setGastoTotal(recContact["tipo de gastos"]) + UtilBrasilFields.converterMoedaParaDouble(recContact["gastos valor"]);            
               // IF: A variavel 'percent' recebe o valor maximo suportado pelo tipo do gasto
               // Se o 'percente' for menor que o valor imputado ele não deixa salvar
-              // Se false ele salva 
+              // Se false ele salva               
               if (percent >= gastoTot) {
-                _listfinance["carteira"]["$ano"]["$mes"].add(recContact);
-
-                setState(() {
-                  _iforText = "";
-                  _typeIforText  = "";
-                }); 
+                double a = percent - gastoTot;
+                double limitPercent = double.parse((a / percent).toStringAsPrecision(2));
+                if(limitPercent <= 0.2) {
+                  setState(() {
+                    _iforText = "Seu sinal atingiu 80%, fique atento e adiciono mais receitas.";
+                    _typeIforText  = "!ATENÇÃO!\n";                 
+                  });
+                } else {
+                  setState(() {
+                    _iforText = "";
+                    _typeIforText  = "";
+                  }); 
+                }
+                _listfinance["carteira"]["$ano"]["$mes"].add(recContact);                
               } else {           
                 setState(() {
                   _iforText = "Aumente sua receita, sinal lotado!";
@@ -348,12 +356,20 @@ class _HomeState extends State<Home> {
               // Se o 'percente' for menor que o valor imputado ele não deixa salvar
               // Se false ele salva 
               if (percent >= gastoTot) {
+                double a = percent - gastoTot;
+                double limitPercent = double.parse((a / percent).toStringAsPrecision(2));
+                if(limitPercent <= 0.2) {
+                  setState(() {
+                    _iforText = "Seu sinal atingiu 80%, fique atento e adiciono mais receitas.";
+                    _typeIforText  = "!ATENÇÃO!\n";                 
+                  });
+                } else {
+                  setState(() {
+                    _iforText = "";
+                    _typeIforText  = "";
+                  }); 
+                }
                 _listfinance["carteira"]["$ano"]["$mes"].add(recContact);
-
-                setState(() {
-                  _iforText = "";
-                  _typeIforText = "";
-                }); 
               } else {           
                 setState(() {
                   _iforText = "Aumente sua receita, sinal lotado!";
