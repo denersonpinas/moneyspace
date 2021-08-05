@@ -146,15 +146,15 @@ class _PercentualWidgetState extends State<PercentualWidget> {
               child: Column(
                   children: [
                     TextFieldWidget(
-                      label: "Gastos Essenciais(%)",
-                      nameController: _typeOneController,
+                      label: "Gastos Não Essenciais(%)",
+                      nameController: _typeTwoController,
                     ),
                     SizedBox(
                       height: 10,
                     ),
                     TextFieldWidget(
-                      label: "Gastos Não Essenciais(%)",
-                      nameController: _typeTwoController,
+                      label: "Gastos Essenciais(%)",
+                      nameController: _typeOneController,
                     ),
                     SizedBox(
                       height: 10,
@@ -197,7 +197,7 @@ class _PercentualWidgetState extends State<PercentualWidget> {
                                 }        
                               } else {
                                 setState(() {
-                                  _inforText = "Soma de todas as porcentagens tem que ser 100";
+                                  _inforText = "A soma de todas as porcentagens tem que ser 100";
                                 });        
                               }                              
                             }
