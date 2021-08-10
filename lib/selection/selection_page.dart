@@ -195,7 +195,7 @@ class _SelectionPageState extends State<SelectionPage> {
                       dropdownValue = newValue!;
                     });
                   },
-                  items: <String>['Gastos Essenciais', 'Gastos Não Essenciais', 'Investimentos']
+                  items: <String>['Gastos Não Essenciais', 'Gastos Essenciais', 'Investimentos']
                       .map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
