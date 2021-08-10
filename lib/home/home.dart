@@ -705,7 +705,7 @@ class _HomeState extends State<Home> {
                 padding: EdgeInsets.all(10),
                 itemCount: _setCount(),
                 itemBuilder: (context, index) {
-                  return _gastosCard(context, index);
+                  return _gastosCard(context, (_setCount()-1)-index); //Ordenação
                 },
               ),
             ),
@@ -968,11 +968,11 @@ class _HomeState extends State<Home> {
     } else if (_listfinance["carteira"]["$ano"]["$mes"][index]
             ["tipo de gastos"] ==
         1) {
-      return Image.asset(AppImages.red);
+      return Image.asset(AppImages.yellow);
     } else if (_listfinance["carteira"]["$ano"]["$mes"][index]
             ["tipo de gastos"] ==
         2) {
-      return Image.asset(AppImages.yellow);
+      return Image.asset(AppImages.red);
     } else if (_listfinance["carteira"]["$ano"]["$mes"][index]
             ["tipo de gastos"] ==
         3) {
