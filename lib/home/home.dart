@@ -14,6 +14,7 @@ import 'package:moneyspace/core/app_colors.dart';
 import 'package:moneyspace/core/app_images.dart';
 import 'package:moneyspace/selection/selection_page.dart';
 import 'package:flutter/material.dart';
+import 'package:moneyspace/sobre/sobre_page.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -653,6 +654,19 @@ class _HomeState extends State<Home> {
                                 mes: mes,
                               )));
                 }
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.lightbulb),
+              title: Text('Sobre'),
+              subtitle: Text('Saiba como funciona o app'),
+              onTap: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SobrePage()
+                  )
+                );
               },
             ),
             ListTile(

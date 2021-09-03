@@ -1,20 +1,30 @@
 class AppImages {
-  static String get add => "assets/images/add.png";
-  static String get arroba => "assets/images/arroba.png";
-  static String get calendar => "assets/images/calendar.png";
   static String get farol => "assets/images/farol.png";
   static String get green => "assets/images/green.png";
   static String get lock => "assets/images/lock.png";
   static String get red => "assets/images/red.png";
-  static String get sifrao => "assets/images/sifrao.png";
-  static String get user => "assets/images/user.png";
   static String get yellow => "assets/images/yellow.png";
-  static String get speech => "assets/images/speech.png";
   static String get logo => "assets/images/logo.png";
   static String get logo02 => "assets/images/logoBranca.png";
   static String get circle => "assets/images/circle.png";
   static String get circlered => "assets/images/circle_red.png";
   static String get circlegreen => "assets/images/circle_green.png";
   static String get arrow => "assets/images/arrow_up.png";
-  static String get bars => "assets/images/bars.png";
+  static String get passo => "assets/images/passo.jpg";
+  static String get passo_01 => "assets/images/passo_01.jpg";
+  static String get passo_02 => "assets/images/passo_02.jpg";
+  static String get passo_03 => "assets/images/passo_03.jpg";
+  static String get passo_04 => "assets/images/passo_04.jpg";
+  static String get passo_05 => "assets/images/passo_05.jpg";
+  static String get passo_06 => "assets/images/passo_06.jpg";
+  static String get passo_07 => "assets/images/passo_07.jpg";
+  static String get passo_08 => "assets/images/passo_08.jpg";
+  static String get passo_09 => "assets/images/passo_09.jpg";
+  static String get passo_10 => "assets/images/passo_10.jpg";
+  static String get passo_10b => "assets/images/passo_10b.jpg";
+  static String get passo_11 => "assets/images/passo_11.jpg";
+  static String get passo_12 => "assets/images/passo_12.jpg";
+  static String get passo_13 => "assets/images/passo_13.jpg";
+  static String get passo_14 => "assets/images/passo_14.jpg";
+  static String get passo_15 => "assets/images/passo_15.jpg";
 }
