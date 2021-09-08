@@ -186,10 +186,12 @@ class _PercentualWidgetState extends State<PercentualWidget> {
                                   _inforText = "";
                                   saveData(_listmetas[0], "metas1");
 
-                                  Navigator.push(
-                                    context, MaterialPageRoute(
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
                                       builder: (context) => Home()
-                                  ));
+                                    )
+                                  );
                                 } else {
                                   setState(() {
                                     _inforText = "Não é permitido valor menor ou igual a 0";
